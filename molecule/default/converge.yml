@@ -13,7 +13,7 @@
   - role: mafalb.apache.httpd
 
   tasks:
-  
+
   - name: index.html is present
     copy:
       content: "{{ ansible_host }}"

@@ -6,7 +6,7 @@
 
   tasks:
 
-  - name: request to server is 
+  - name: httpd is working
     delegate_to: ci-proxy
     get_url:
       url: http://{{ inventory_hostname }}
