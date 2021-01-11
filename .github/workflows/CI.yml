@@ -94,7 +94,7 @@ jobs:
  
     defaults:
       run:
-        working-directory: ansible_collections/mafalb.apache
+        working-directory: ansible_collections/mafalb/apache
 
     steps:
 
