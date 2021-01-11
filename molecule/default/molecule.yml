@@ -34,8 +34,7 @@ platforms:
   - /run/lock
   capabilities:
   - SYS_ADMIN
-#  privileged: ${CI_CONTAINER_PRIVILEGED:-false}
-  privileged: true
+  privileged: ${CI_CONTAINER_PRIVILEGED:-false}
   pre_build_image: ${CI_CONTAINER_PREBUILT:-false}
   tty: true
   groups:
