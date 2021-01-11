@@ -1,0 +1,9 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+httpd_packages:
+- httpd
+
+httpd_service: httpd
+
+...

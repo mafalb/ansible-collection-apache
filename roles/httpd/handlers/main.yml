@@ -1,0 +1,10 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+- name: reload apache
+  service:
+    name: "{{ httpd_service }}"
+    state: reloaded
+  when: not _httpd_has_restarted.changed
+
+...

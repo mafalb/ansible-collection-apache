@@ -1,0 +1,23 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+- name: converge apache
+  hosts: all,!infrastructure_group
+
+  environment:
+    http_proxy: http://ci-proxy:3128
+    https_proxy: http://ci-proxy:3128
+
+  roles:
+
+  - role: mafalb.apache.httpd
+
+  tasks:
+  
+  - name: index.html is present
+    copy:
+      content: "{{ ansible_host }}"
+      dest: "/var/www/html/index.html"
+      mode: '644'
+
+...

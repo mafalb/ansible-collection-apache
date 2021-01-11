@@ -1,0 +1,25 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+- name: check that OS is supported
+  assert:
+    that:
+    - ansible_os_family in ['RedHat','Debian']
+
+- name: include OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+  - "{{ ansible_os_family }}.yml"
+
+- name: apache is present
+  package:
+    name: "{{ httpd_packages }}"
+
+- name: apache is started
+  service:
+    name: "{{ httpd_service }}"
+    state: started
+    enabled: "{{ httpd_service_enabled }}"
+  register: _httpd_has_started
+
+...
