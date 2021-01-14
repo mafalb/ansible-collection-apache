@@ -1,0 +1,12 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+httpd_packages:
+- "{{ scl_prefix }}-httpd"
+
+httpd_service: "{{ scl_prefix }}-httpd"
+
+scl_vendor: "{{ scl_prefix.split('-')[0] if scl_prefix.split('-')|length == 2 else 'rh' }}"
+scl_name: "{{ scl_prefix.split('-')[1] if scl_prefix.split('-')|length == 2 else scl_prefix }}"
+
+...

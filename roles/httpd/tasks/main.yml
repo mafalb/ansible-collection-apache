@@ -11,6 +11,10 @@
   with_first_found:
   - "{{ ansible_os_family }}.yml"
 
+- name: include SCL specific variables
+  include_vars: scl.yml
+  when: scl_prefix is defined
+
 - name: apache is present
   package:
     name: "{{ httpd_packages }}"
