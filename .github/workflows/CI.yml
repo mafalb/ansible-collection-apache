@@ -47,48 +47,59 @@ jobs:
         - target: centos7
           distribution: centos
           version: 7
+          privileged: false
 
         - target: centos8
           distribution: centos
           version: 8
+          privileged: false
 
         - target: oraclelinux8
           distribution: oraclelinux
           version: 8-slim
+          privileged: false
 
         - target: ubuntu-16.04
           distribution: ubuntu
           version: xenial
+          privileged: false
 
         - target: ubuntu-18.04
           distribution: ubuntu
           version: bionic
+          privileged: false
 
         - target: ubuntu-20.04
           distribution: ubuntu
           version: focal
+          privileged: false
 
         - target: fedora32
           distribution: fedora
           version: 32
+          privileged: true
 
         - target: fedora33
           distribution: fedora
           version: 33
+          privileged: true
 
         - target: debian9
           distribution: debian
           version: stretch
+          privileged: false
 
         - target: debian10
           distribution: debian
           version: buster
+          privileged: true
 
     env:
       
       ANSIBLE_VERSION: ${{ matrix.ansible_version }}
       CI_CONTAINER_IMAGE: ${{ matrix.distribution }}
       CI_CONTAINER_TAG: ${{ matrix.version }}
+      CI_CONTAINER_PRIVILEGED: ${{ matrix.privileged }}
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
  
@@ -142,13 +153,14 @@ jobs:
         - target: centos7
           distribution: centos
           version: 7
+          privileged: false
 
     env:
       
       ANSIBLE_VERSION: ${{ matrix.ansible_version }}
       CI_CONTAINER_IMAGE: ${{ matrix.distribution }}
       CI_CONTAINER_TAG: ${{ matrix.version }}
-      CI_CONTAINER_PRIVILEGED: true
+      CI_CONTAINER_PRIVILEGED: ${{ matrix.privileged }}
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
  
