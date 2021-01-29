@@ -1,19 +1,41 @@
 # vim: set ft=yaml ts=2 expandtab:
 ---
 
-- name: check that OS is supported
-  assert:
-    that:
-    - ansible_os_family in ['RedHat','Debian']
+- name: OS specific stuff
+  block:
 
-- name: include OS specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-  - "{{ ansible_os_family }}.yml"
+  - name: check that OS is supported
+    assert:
+      that:
+      - ansible_os_family in ['RedHat','Debian']
 
-- name: include SCL specific variables
-  include_vars: scl.yml
+  - name: include OS specific variables
+    include_vars: "{{ item }}"
+    with_first_found:
+    - "{{ ansible_os_family }}.yml"
+
+
+- name: SCL specific stuff
+  block:
+
+  - name: assert that OS is supported
+    assert:
+      that:
+      - ansible_os_family == 'RedHat'
+      - ansible_os_family != 'Fedora'
+      - ansible_distribution_major_version == '7'
+
+  - name: include SCL specific variables
+    include_vars: scl.yml
+
+  - debug: var=scl_vendor
+  - debug: var=scl_name
+    tags:
+    - never
+    - debug
+
   when: scl_prefix is defined
+
 
 - name: apache is present
   package:

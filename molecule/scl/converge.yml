@@ -8,14 +8,9 @@
     http_proxy: http://ci-proxy:3128
     https_proxy: http://ci-proxy:3128
 
-  pre_tasks:
-
-  - name: yum repo for scl is present
-    package:
-      name: centos-release-scl-rh
-
   roles:
 
+  - role: mafalb.scl.rh
   - role: mafalb.apache.httpd
     scl_prefix: httpd24
 

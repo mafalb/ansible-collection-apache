@@ -31,6 +31,7 @@ galaxy_info:
   galaxy_tags:
   - httpd
 
-dependencies: []
+dependencies:
+- mafalb.scl.rh
 
 ...
