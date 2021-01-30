@@ -31,8 +31,6 @@ galaxy_info:
   galaxy_tags:
   - httpd
 
-dependencies:
-- mafalb.scl.rh
-  when: scl_prefix is defined
+dependencies: []
 
 ...
