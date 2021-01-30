@@ -28,7 +28,7 @@
   - name: include SCL specific variables
     include_vars: scl.yml
 
-  - debug: var=scl_vendor
+  - debug: var=scl_provider
   - debug: var=scl_name
     tags:
     - never
