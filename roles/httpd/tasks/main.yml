@@ -41,6 +41,15 @@
   package:
     name: "{{ httpd_packages }}"
 
+- name: apache is configured
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ httpd_basedir }}/{{ item.dest }}"
+    mode: "{{ httpd_cfg_default_mode }}"
+  loop: "{{ httpd_templates }}"
+  when: httpd_templates is defined
+  notify: reload httpd
+
 - name: apache is started
   service:
     name: "{{ httpd_service }}"

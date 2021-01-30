@@ -1,0 +1,12 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+- name:
+  include_role:
+    name: mafalb.apache.httpd
+  vars:
+    scl_prefix: "{{ 'httpd24' if scl is defined else omit }}"
+    httpd_templates:
+    - src: test.conf.j2
+      dest: conf.d/test.conf
+  

@@ -2,5 +2,6 @@
 ---
 
 httpd_service_enabled: true
+httpd_cfg_default_mode: '644'
 
 ...
