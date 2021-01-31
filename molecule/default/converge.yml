@@ -11,6 +11,7 @@
   roles:
 
   - role: mafalb.apache.httpd
+    httpd_different_vhosts_d: conf.vhosts.d
   - role: _ci.httpd
 
   tasks:

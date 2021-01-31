@@ -41,6 +41,14 @@
   package:
     name: "{{ httpd_packages }}"
 
+- debug: var=httpd_vhosts_d
+
+- name: additional directories are present
+  file:
+    path: "{{ httpd_vhosts_d }}"
+    state: directory
+    mode: '755'
+  
 - name: apache is configured
   template:
     src: "{{ item.src }}"
