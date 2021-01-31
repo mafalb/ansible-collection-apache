@@ -60,7 +60,7 @@
   loop: "{{ httpd_templates }}"
   when:
   - httpd_templates is defined
-  - httpd_conf_symlink|bool == true
+  - httpd_conf_symlink|bool
   register: _httpd_symlinks
 
 - block:
@@ -69,7 +69,7 @@
   tags:
   - never
   - debug
-  
+
 - name: apache is started
   service:
     name: "{{ httpd_service }}"
