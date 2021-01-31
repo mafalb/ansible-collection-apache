@@ -48,7 +48,7 @@
     path: "{{ httpd_vhosts_d }}"
     state: directory
     mode: '755'
-  
+
 - name: apache is configured
   template:
     src: "{{ item.src }}"

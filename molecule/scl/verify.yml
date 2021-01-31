@@ -15,7 +15,7 @@
   - name: directory for virtual hosts is present
     command: test -d /opt/rh/httpd24/root/etc/httpd/conf.vhosts.d
     changed_when: false
-  
+
   - name: config files are present
     command: test -f {{ item }}
     changed_when: false
