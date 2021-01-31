@@ -11,13 +11,16 @@
   roles:
 
   - role: mafalb.scl.rh
+
   - role: mafalb.apache.httpd
     scl_prefix: httpd24
+
   - role: mafalb.apache.httpd
     scl_prefix: httpd24
     httpd_templates:
     - src: vhosts.conf
       dest: conf.d/vhosts.conf
+
   - role: _ci.httpd
     scl: true
 
