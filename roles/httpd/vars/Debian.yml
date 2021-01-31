@@ -5,5 +5,12 @@ httpd_packages:
 - apache2
 
 httpd_service: apache2
+httpd_basedir: /etc/apache2
+
+httpd_main_cfg: /etc/apache2/apache2.conf
+httpd_conf_d: /etc/apache2/conf-available
+httpd_vhosts_d: /etc/httpd/sites-available
+
+httpd_conf_symlink: true
 
 ...

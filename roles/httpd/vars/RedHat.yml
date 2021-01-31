@@ -7,4 +7,10 @@ httpd_packages:
 httpd_service: httpd
 httpd_basedir: /etc/httpd
 
+httpd_main_cfg: /etc/httpd/conf/httpd.conf
+httpd_conf_d: /etc/httpd/conf.d
+httpd_vhosts_d: /etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
+
+httpd_conf_symlink: false
+
 ...

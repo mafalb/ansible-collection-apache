@@ -15,7 +15,7 @@
   vars:
     httpd_templates:
     - src: test.conf.j2
-      dest: conf.d/test.conf
+      dest: test.conf
   when: not scl is defined
 
 ...
