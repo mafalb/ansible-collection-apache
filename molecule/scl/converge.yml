@@ -18,7 +18,8 @@
   - role: mafalb.apache.httpd
     scl_prefix: httpd24
     httpd_templates:
-    - src: vhosts.conf
+    - src: vhosts.conf.j2
+      dest: vhosts.conf
 
   - role: _ci.httpd
     scl: true
