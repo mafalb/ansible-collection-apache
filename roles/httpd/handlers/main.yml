@@ -6,5 +6,9 @@
     name: "{{ httpd_service }}"
     state: reloaded
   when: not _httpd_has_started.changed
+  listen:
+  - check for changed cert
+  - check for changed key
+  - check for changed chain
 
 ...
