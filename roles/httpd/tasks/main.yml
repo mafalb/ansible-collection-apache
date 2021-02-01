@@ -43,11 +43,23 @@
 
 - debug: var=httpd_vhosts_d
 
-- name: additional directories are present
-  file:
-    path: "{{ httpd_vhosts_d }}"
-    state: directory
-    mode: '755'
+- name: directory for vhosts config is present
+  block:
+
+  - name: additional directories are present
+    file:
+      path: "{{ httpd_vhosts_d }}"
+      state: directory
+      mode: '755'
+
+  - name: vhosts.conf is present
+    template:
+      src: vhosts.conf.j2
+      dest: "{{ httpd_conf_d }}/vhosts.conf"
+      mode: '644'
+      backup: true
+
+  when: not httpd_has_vhosts_d
 
 - name: apache is configured
   template:

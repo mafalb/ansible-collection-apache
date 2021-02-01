@@ -13,8 +13,8 @@
   - role: mafalb.apache.httpd
     httpd_different_vhosts_d: conf.vhosts.d
     httpd_templates:
-    - src: vhosts.conf.j2
-      dest: vhosts.conf
+    - src: bla.conf.j2
+      dest: bla.conf
 
   - role: _ci.httpd
 

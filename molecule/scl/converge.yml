@@ -8,21 +8,20 @@
     http_proxy: http://ci-proxy:3128
     https_proxy: http://ci-proxy:3128
 
+  vars:
+    httpd_different_vhosts_d: conf.vhosts.d
+
   roles:
 
   - role: mafalb.scl.rh
-    httpd_different_vhosts_d: conf.vhosts.d
-
   - role: mafalb.apache.httpd
-    httpd_different_vhosts_d: conf.vhosts.d
     scl_prefix: httpd24
 
   - role: mafalb.apache.httpd
     scl_prefix: httpd24
-    httpd_different_vhosts_d: conf.vhosts.d
     httpd_templates:
-    - src: vhosts.conf.j2
-      dest: vhosts.conf
+    - src: bla.conf.j2
+      dest: bla.conf
 
   - role: _ci.httpd
     scl: true

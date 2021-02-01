@@ -12,5 +12,6 @@ httpd_conf_d: /etc/httpd/conf.d
 httpd_vhosts_d: /etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
 
 httpd_conf_symlink: false
+httpd_has_vhosts_d: false
 
 ...
