@@ -14,4 +14,6 @@ httpd_main_cfg: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf/httpd
 httpd_conf_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf.d
 httpd_vhosts_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
 
+httpd_documentroot: /opt/{{ scl_provider }}/{{ scl_name }}/root/var/www/html
+
 ...
