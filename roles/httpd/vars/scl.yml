@@ -9,7 +9,8 @@ httpd_service: "{{ scl_prefix }}-httpd"
 scl_provider: "{{ scl_prefix|mafalb.scl.provider }}"
 scl_name: "{{ scl_prefix|mafalb.scl.name }}"
 
-httpd_basedir: /opt/{{ scl_provider }}/{{ scl_name }}/root/root/etc/httpd
+httpd_basedir: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd
+httpd_main_cfg: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf/httpd.conf
 httpd_conf_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf.d
 httpd_vhosts_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
 
