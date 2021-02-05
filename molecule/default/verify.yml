@@ -15,17 +15,12 @@
   - name: checks for RedHat
     block:
 
-    - name: directory for virtual hosts is present
-      command: test -d /etc/httpd/conf.vhosts.d
-      changed_when: false
-
     - name: config files are present
       command: test -f {{ item }}
       changed_when: false
       loop:
       - /etc/httpd/conf.d/test.conf
       - /etc/httpd/conf.d/bla.conf
-      - /etc/httpd/conf.d/vhosts.conf
 
     when: ansible_os_family == 'RedHat'
 

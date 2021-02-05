@@ -4,7 +4,6 @@
 - include_role:
     name: mafalb.apache.httpd
   vars:
-    httpd_different_vhosts_d: conf.vhosts.d
     scl_prefix: httpd24
     httpd_templates:
     - src: test.conf.j2
@@ -14,7 +13,6 @@
 - include_role:
     name: mafalb.apache.httpd
   vars:
-    httpd_different_vhosts_d: conf.vhosts.d
     httpd_templates:
     - src: test.conf.j2
       dest: test.conf

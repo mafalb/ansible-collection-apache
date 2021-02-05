@@ -8,6 +8,7 @@ httpd_service: apache2
 httpd_basedir: /etc/apache2
 
 httpd_main_cfg: /etc/apache2/apache2.conf
+httpd_main_template: httpd.conf-Debian.j2
 httpd_conf_d: /etc/apache2/conf-available
 httpd_vhosts_d: /etc/apache2/sites-available
 

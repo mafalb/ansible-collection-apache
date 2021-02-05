@@ -41,7 +41,6 @@
   package:
     name: "{{ httpd_packages }}"
 
-- debug: var=httpd_vhosts_d
 
 - name: directory for vhosts config is present
   block:
@@ -52,14 +51,17 @@
       state: directory
       mode: '755'
 
-  - name: vhosts.conf is present
-    template:
-      src: vhosts.conf.j2
-      dest: "{{ httpd_conf_d }}/vhosts.conf"
-      mode: '644'
-      backup: true
-
   when: not httpd_has_vhosts_d
+
+
+- name: main config is present
+  template:
+    src: "{{ httpd_main_template }}"
+    dest: "{{ httpd_main_cfg }}"
+    mode: "{{ httpd_cfg_mode }}"
+    backup: true
+  notify: reload httpd
+  register: _http_main_template
 
 - name: apache is configured
   template:

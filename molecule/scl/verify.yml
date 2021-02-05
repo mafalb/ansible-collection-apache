@@ -12,15 +12,10 @@
       url: http://{{ inventory_hostname }}
       dest: /tmp/{{ inventory_hostname }}.html
 
-  - name: directory for virtual hosts is present
-    command: test -d /opt/rh/httpd24/root/etc/httpd/conf.vhosts.d
-    changed_when: false
-
   - name: config files are present
     command: test -f {{ item }}
     changed_when: false
     loop:
     - /opt/rh/httpd24/root/etc/httpd/conf.d/test.conf
-    - /opt/rh/httpd24/root/etc/httpd/conf.d/vhosts.conf
 
 ...
