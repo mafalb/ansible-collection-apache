@@ -131,7 +131,7 @@ jobs:
         molecule test
 
     - name: molecule tests with scl
-      if: has_scl == true
+      if: matrix.has_scl == true
       run: |
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s scl
