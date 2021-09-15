@@ -25,7 +25,7 @@
   - name: check that OS is supported
     assert:
       that:
-      - ansible_os_family in ['RedHat','Debian']
+      - ansible_os_family in ['Rocky','RedHat','Debian']
 
   - name: include OS specific variables
     include_vars: "{{ item }}"
