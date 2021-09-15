@@ -1,7 +1,1 @@
-# vim: set ft=yaml ts=2 expandtab:
---- 
-
-skip_list:
-- '106'
-
-...
+warn_list: []

@@ -19,31 +19,23 @@
 
 ---
 
-galaxy_info:
-  author: Markus Falb <markus.falb@mafalb.at>
-  description: a role to support CI
-  license: GPL-3.0-or-later
-  min_ansible_version: 2.9
+- name: include mafalb.apache.httpd with scl
+  include_role:
+    name: mafalb.apache.httpd
+  vars:
+    scl_prefix: httpd24
+    httpd_templates:
+    - src: test.conf.j2
+      dest: test.conf
+  when: scl is defined
 
-  platforms:
-  - name: EL
-    versions:
-    - 7
-    - 8
-  - name: Fedora
-    versions:
-    - 32
-    - 33
-  - name: Ubuntu
-    versions:
-    - xenial
-    - bionic
-    - focal
-  - name: Debian
-    versions:
-    - stretch
-    - buster
-
-dependencies: []
+- name: include mafalb.apache.httpd without scl
+  include_role:
+    name: mafalb.apache.httpd
+  vars:
+    httpd_templates:
+    - src: test.conf.j2
+      dest: test.conf
+  when: not scl is defined
 
 ...

@@ -38,7 +38,7 @@
     - src: bla.conf.j2
       dest: bla.conf
 
-  - role: _ci.httpd
+  - role: ci.httpd
     scl: true
 
   tasks:

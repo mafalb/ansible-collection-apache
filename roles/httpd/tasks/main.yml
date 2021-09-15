@@ -47,8 +47,10 @@
   - name: include SCL specific variables
     include_vars: scl.yml
 
-  - debug: var=scl_provider
-  - debug: var=scl_name
+  - name: debug
+    debug: var=scl_provider
+  - name: debug
+    debug: var=scl_name
     tags:
     - never
     - debug
@@ -105,8 +107,10 @@
   register: _httpd_symlinks
 
 - block:
-  - debug: var=_httpd_templates
-  - debug: var=_httpd_symlinks
+  - name: debug
+    debug: var=_httpd_templates
+  - name: debug
+    debug: var=_httpd_symlinks
   tags:
   - never
   - debug
