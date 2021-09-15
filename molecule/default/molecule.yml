@@ -56,7 +56,7 @@ platforms:
   - /run/lock
   capabilities:
   - SYS_ADMIN
-  privileged: ${CI_CONTAINER_PRIVILEGED:-false}
+  privileged: ${CI_PRIVILEGED:-false}
   pre_build_image: ${CI_CONTAINER_PREBUILT:-false}
   tty: true
   groups:
@@ -78,7 +78,6 @@ platforms:
   - /run/lock
   capabilities:
   - SYS_ADMIN
-  privileged: ${CI_CONTAINER_PRIVILEGED:-false}
   pre_build_image: ${CI_CONTAINER_PREBUILT:-false}
   tty: true
   groups:
