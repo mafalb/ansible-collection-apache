@@ -56,9 +56,11 @@ jobs:
 
         - target: fedora33
           image: docker.io/fedora:33
+          privileged: true
 
         - target: fedora34
           image: docker.io/fedora:34
+          privileged: true
 
         - target: c8s
           image: quay.io/centos/centos:stream8
@@ -83,10 +85,12 @@ jobs:
         # debian buster
         - target: debian10
           image: docker.io/debian:10
+          privileged: true
 
         # debian bullseye
         - target: debian11
           image: docker.io/debian:11
+          privileged: true
 
         # ubuntu xenial
         - target: ubuntu16
@@ -108,6 +112,7 @@ jobs:
       ANSIBLE_VERSION: ${{ matrix.ansible_version }}
       CI_IMAGE: ${{ matrix.image }}
       CI_HOSTNAME: ci-${{ matrix.target }}
+      CI_PRIVILEGED: ${{ matrix.privileged }}
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
  
