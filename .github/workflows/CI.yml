@@ -83,9 +83,11 @@ jobs:
 
         - target: debian10
           image: docker.io/debian:buster
+          privileged: true
 
         - target: debian11
           image: docker.io/debian:bullseye
+          privileged: true
 
         - target: ubuntu16
           image: docker.io/ubuntu:xenial
