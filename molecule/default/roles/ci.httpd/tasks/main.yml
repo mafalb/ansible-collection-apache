@@ -19,7 +19,23 @@
 
 ---
 
-httpd_service_enabled: true
-httpd_cfg_mode: '644'
+- name: include mafalb.apache.httpd with scl
+  include_role:
+    name: mafalb.apache.httpd
+  vars:
+    scl_prefix: httpd24
+    httpd_templates:
+    - src: test.conf.j2
+      dest: test.conf
+  when: scl is defined
+
+- name: include mafalb.apache.httpd without scl
+  include_role:
+    name: mafalb.apache.httpd
+  vars:
+    httpd_templates:
+    - src: test.conf.j2
+      dest: test.conf
+  when: not scl is defined
 
 ...

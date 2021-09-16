@@ -19,7 +19,8 @@
 
 ---
 
-httpd_service_enabled: true
-httpd_cfg_mode: '644'
+collections:
+- name: mafalb.squid
+- name: mafalb.scl
 
 ...

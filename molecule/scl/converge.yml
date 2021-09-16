@@ -19,7 +19,34 @@
 
 ---
 
-httpd_service_enabled: true
-httpd_cfg_mode: '644'
+- name: converge apache
+  hosts: all,!infrastructure_group
+
+  environment:
+    http_proxy: http://ci-proxy:3128
+    https_proxy: http://ci-proxy:3128
+
+  roles:
+
+  - role: mafalb.scl.rh
+  - role: mafalb.apache.httpd
+    scl_prefix: httpd24
+
+  - role: mafalb.apache.httpd
+    scl_prefix: httpd24
+    httpd_templates:
+    - src: bla.conf.j2
+      dest: bla.conf
+
+  - role: ci.httpd
+    scl: true
+
+  tasks:
+
+  - name: index.html is present
+    copy:
+      content: "{{ ansible_host }}"
+      dest: "/opt/rh/httpd24/root/var/www/html/index.html"
+      mode: '644'
 
 ...

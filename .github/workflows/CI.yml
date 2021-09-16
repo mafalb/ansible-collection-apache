@@ -3,20 +3,25 @@
 
 name: CI
 
-on:
+on:  # yamllint disable-line rule:truthy
 
   push:
     branches:
     - '**'
     tags-ignore:
     - '*'
-
+  pull_request:
+  pull_request_review:
   schedule:
     - cron: '40 11 * * 6'
 
 jobs:
 
   CI:
+
+    # don't run on pull request from ourselves
+    #
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     runs-on: ubuntu-20.04
 
@@ -27,69 +32,80 @@ jobs:
       matrix:
 
         target:
+        - fedora33
+        - fedora34
+        - c8s
         - centos7
         - centos8
-        - oraclelinux8
-        - ubuntu-16.04
-        - ubuntu-18.04
-        - ubuntu-20.04
-        - fedora32
-        - fedora33
+        - rocky8
+        - alma8
         - debian9
         - debian10
+        - debian11
+        - ubuntu16
+        - ubuntu18
+        - ubuntu20
+        - ubuntu2104
 
         ansible_version:
         - '2.9'
         - '2.10'
+        - '2.11'
 
         include:
 
+        - target: fedora33
+          image: docker.io/fedora:33
+          privileged: true
+
+        - target: fedora34
+          image: docker.io/fedora:34
+          privileged: true
+
+        - target: c8s
+          image: quay.io/centos/centos:stream8
+
+        - target: alma8
+          image: quay.io/almalinux/almalinux:8
+
+        - target: rocky8
+          image: quay.io/rockylinux/rockylinux:8
+
         - target: centos7
-          distribution: centos
-          version: 7
+          image: quay.io/centos/centos:7
+          has_scl: true
 
         - target: centos8
-          distribution: centos
-          version: 8
-
-        - target: oraclelinux8
-          distribution: oraclelinux
-          version: 8-slim
-
-        - target: ubuntu-16.04
-          distribution: ubuntu
-          version: xenial
-
-        - target: ubuntu-18.04
-          distribution: ubuntu
-          version: bionic
-
-        - target: ubuntu-20.04
-          distribution: ubuntu
-          version: focal
-
-        - target: fedora32
-          distribution: fedora
-          version: 32
-
-        - target: fedora33
-          distribution: fedora
-          version: 33
+          image: quay.io/centos/centos:8
 
         - target: debian9
-          distribution: debian
-          version: stretch
+          image: docker.io/debian:stretch
 
         - target: debian10
-          distribution: debian
-          version: buster
+          image: docker.io/debian:buster
+          privileged: true
+
+        - target: debian11
+          image: docker.io/debian:bullseye
+          privileged: true
+
+        - target: ubuntu16
+          image: docker.io/ubuntu:xenial
+
+        - target: ubuntu18
+          image: docker.io/ubuntu:bionic
+
+        - target: ubuntu20
+          image: docker.io/ubuntu:focal
+
+        - target: ubuntu2104
+          image: docker.io/ubuntu:hirsute
 
     env:
-      
       ANSIBLE_VERSION: ${{ matrix.ansible_version }}
-      CI_CONTAINER_IMAGE: ${{ matrix.distribution }}
-      CI_CONTAINER_TAG: ${{ matrix.version }}
-      CI_CONTAINER_PRIVILEGED: true
+      CI_IMAGE: ${{ matrix.image }}
+      CI_HOSTNAME: ci-${{ matrix.target }}
+      CI_PRIVILEGED: ${{ matrix.privileged }}
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
  
@@ -104,20 +120,28 @@ jobs:
       with:
         path: ansible_collections/mafalb/apache
 
-    - name: install dependencies
-      run: ansible-galaxy collection install -r molecule/requirements.yml
-
     - name: install molecule
-      run: ansible-playbook -D molecule/install_molecule.yml -e molecule_ansible_version=${{ matrix.ansible_version }} -t all,debug
+      run: |
+        ansible-galaxy collection install mafalb.ansible
+        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/molecule.yml -e molecule_ansible_version=${{ matrix.ansible_version }} -t all,debug
 
     - name: check ansible version
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        ansible --version | grep "^ansible ${{ matrix.ansible_version }}"
+        ansible --version | grep "^ansible.* ${{ matrix.ansible_version }}"
 
     - name: molecule tests
       run: |
         source ~/.virtualenvs/molecule/bin/activate
         molecule test
+
+    - name: molecule tests with scl
+      if: matrix.has_scl == true
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s scl
+
+    - name: list local container images
+      run: docker image ls
 
 ...

@@ -19,7 +19,21 @@
 
 ---
 
-httpd_service_enabled: true
-httpd_cfg_mode: '644'
+- name: verify
+  hosts: all,!infrastructure_group
+
+  tasks:
+
+  - name: httpd is working
+    delegate_to: ci-proxy
+    get_url:
+      url: http://{{ inventory_hostname }}
+      dest: /tmp/{{ inventory_hostname }}.html
+
+  - name: config files are present
+    command: test -f {{ item }}
+    changed_when: false
+    loop:
+    - /opt/rh/httpd24/root/etc/httpd/conf.d/test.conf
 
 ...

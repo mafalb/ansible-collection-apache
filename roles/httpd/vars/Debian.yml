@@ -1,9 +1,36 @@
 # vim: set ft=yaml ts=2 expandtab:
+
+# This file is part of ansible-collection-apache
+# Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
+#
+# ansible-collection-apache is free software: you can redistribute it 
+# and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# ansible-collection-apache is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ansible-collection-apache.
+# If not, see <https://www.gnu.org/licenses/>.
+
 ---
 
 httpd_packages:
 - apache2
 
 httpd_service: apache2
+httpd_basedir: /etc/apache2
+
+httpd_main_cfg: /etc/apache2/apache2.conf
+httpd_main_template: httpd.conf-Debian.j2
+httpd_conf_d: /etc/apache2/conf-available
+httpd_vhosts_d: /etc/apache2/sites-available
+
+httpd_conf_symlink: true
+httpd_has_vhosts_d: true
 
 ...

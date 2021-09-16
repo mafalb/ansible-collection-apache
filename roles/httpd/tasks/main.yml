@@ -1,19 +1,119 @@
 # vim: set ft=yaml ts=2 expandtab:
+
+# This file is part of ansible-collection-apache
+# Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
+#
+# ansible-collection-apache is free software: you can redistribute it 
+# and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# ansible-collection-apache is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ansible-collection-apache.
+# If not, see <https://www.gnu.org/licenses/>.
+
 ---
 
-- name: check that OS is supported
-  assert:
-    that:
-    - ansible_os_family in ['RedHat','Debian']
+- name: OS specific stuff
+  block:
 
-- name: include OS specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-  - "{{ ansible_os_family }}.yml"
+  - name: check that OS is supported
+    assert:
+      that:
+      - ansible_os_family in ['Rocky','RedHat','Debian']
+
+  - name: include OS specific variables
+    include_vars: "{{ item }}"
+    with_first_found:
+    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+
+- name: SCL specific stuff
+  block:
+
+  - name: assert that OS is supported
+    assert:
+      that:
+      - ansible_os_family == 'RedHat'
+      - ansible_os_family != 'Fedora'
+      - ansible_distribution_major_version == '7'
+
+  - name: include SCL specific variables
+    include_vars: scl.yml
+
+  - name: debug
+    debug: var=scl_provider
+  - name: debug
+    debug: var=scl_name
+    tags:
+    - never
+    - debug
+
+  when: scl_prefix is defined
+
 
 - name: apache is present
   package:
     name: "{{ httpd_packages }}"
+
+
+- name: directory for vhosts config is present
+  block:
+
+  - name: additional directories are present
+    file:
+      path: "{{ httpd_vhosts_d }}"
+      state: directory
+      mode: '755'
+
+  when: not httpd_has_vhosts_d
+
+
+- name: main config is present
+  template:
+    src: "{{ httpd_main_template }}"
+    dest: "{{ httpd_main_cfg }}"
+    mode: "{{ httpd_cfg_mode }}"
+    backup: true
+  notify: reload httpd
+  register: _http_main_template
+
+- name: apache is configured
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ httpd_conf_d }}/{{ item.dest }}"
+    mode: "{{ httpd_cfg_mode }}"
+    backup: true
+  loop: "{{ httpd_templates }}"
+  when: httpd_templates is defined
+  notify: reload httpd
+  register: _httpd_templates
+
+- name: symlink if necessary (e.g. on debian)
+  file:
+    src: "{{ httpd_conf_d }}/{{ item.dest }}"
+    dest: "{{ httpd_basedir }}/conf-enabled/{{ item.dest }}"
+    state: link
+  loop: "{{ httpd_templates }}"
+  when:
+  - httpd_templates is defined
+  - httpd_conf_symlink|bool
+  register: _httpd_symlinks
+
+- block:
+  - name: debug
+    debug: var=_httpd_templates
+  - name: debug
+    debug: var=_httpd_symlinks
+  tags:
+  - never
+  - debug
 
 - name: apache is started
   service:
