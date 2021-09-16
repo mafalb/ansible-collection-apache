@@ -1,0 +1,40 @@
+{# a simple directive
+#}
+{%- macro directive(key, value, i) -%}
+{% if value|type_debug == 'list' -%}
+{% for v in value -%}
+{{ i * " " }}{{ key }} {{ v }}
+{% endfor -%}
+{% else -%}
+{{ i * " " }}{{ key }} {{ value }}
+{% endif -%}
+{% endmacro -%}
+
+{# a container section like <Directory> or <Location>
+#}
+{%- macro container_section(key, value, i) %}
+
+{{ i * " " }}<{{ key }}>
+{% for directive in value|dict2items -%}
+{{ config_line(directive.key, directive.value, i+4) -}}
+{% endfor -%}
+{{ i * " " }}</{{ key.split()[0] }}>
+
+{% endmacro -%}
+
+{# a container section or a simple directive
+#} 
+{%- macro config_line(key, value, i) -%}
+{% if key.split()[0] in httpd_container_sections -%}
+{{ container_section(key, value, i) -}}
+{% else -%}
+{{ directive(key, value, i) -}}
+{% endif -%}
+{% endmacro -%}
+
+# {{ ansible_managed }}
+{% set i=0 %}
+
+{% for line in httpd_cfg_dict|dict2items -%}
+{{ config_line(line.key, line.value, i) -}}
+{% endfor -%}

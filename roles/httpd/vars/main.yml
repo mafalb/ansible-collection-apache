@@ -19,21 +19,20 @@
 
 ---
 
-httpd_packages:
-- apache2
-
-httpd_service: apache2
-httpd_basedir: /etc/apache2
-
-httpd_main_cfg: /etc/apache2/apache2.conf
-httpd_main_template: httpd.conf-Debian.j2
-httpd_conf_d: /etc/apache2/conf-available
-httpd_vhosts_d: /etc/apache2/sites-available
-
-httpd_conf_symlink: true
-httpd_has_vhosts_d: true
-
-httpd:
-  cfg: {}
+httpd_container_sections:
+- Directory
+- DirectoryMatch
+- Files
+- FilesMatch
+- If
+- IfDefine
+- IfModule
+- IfVersion
+- Location
+- LocationMatch
+- MDomainSet
+- Proxy
+- ProxyMatch
+- VirtualHost
 
 ...

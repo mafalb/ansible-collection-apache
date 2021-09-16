@@ -26,7 +26,7 @@ httpd_service: httpd
 httpd_basedir: /etc/httpd
 
 httpd_main_cfg: /etc/httpd/conf/httpd.conf
-httpd_main_template: httpd.conf-Redhat-7.j2
+httpd_main_template: httpd.apache.httpd.conf.j2
 httpd_conf_d: /etc/httpd/conf.d
 httpd_vhosts_d: /etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
 
@@ -34,4 +34,56 @@ httpd_conf_symlink: false
 httpd_has_vhosts_d: false
 httpd_documentroot: /var/www/html
 
+httpd_default_config:
+  ServerRoot: "{{ httpd_basedir }}"
+  Listen: 80
+  Include: "conf.modules.d/*.conf"
+  User: apache
+  Group: apache
+  ServerAdmin: root@localhost
+  DocumentRoot: /var/www/html
+  'Directory /':
+    AllowOverride: none
+    Require: all denied
+  'Directory var/www':
+    Allowoverride: none
+    Require: all granted
+  'Directory /var/www/html':
+    Options: Indexes FollowSymlinks
+    AllowOverride: none
+    Require: all granted
+  'IfModule dir_module':
+    DirectoryIndex: index.html
+  'Files .ht*':
+    Require: all denied
+  ErrorLog: "logs/error_log"
+  LogLevel: warn
+  'IfModule log_config_module':
+    Logformat:
+    - '"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined'
+    - '"%h %l %u %t \"%r\" %>s %b" common'
+    'IfModule logio_module':
+      LogFormat: '"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio'
+    CustomLog: '"logs/access_log" combined'
+  'IfModule alias_module':
+    ScriptAlias: '/cgi-bin/ "/var/www/cgi-bin/"'
+  'Directory "/var/www/cgi-bin"':
+    Allowoverride: none
+    Options: none
+    Require: all granted
+  'IfModule mime_module':
+    TypesConfig: /etc/mime.types
+    AddType:
+    - application/x-compress .Z
+    - application/x-gzip .gz .tgz
+    - text/html .shtml
+    AddOutputFilter: INCLUDES .shtml
+  AddDefaultCharset: UTF-8
+  'IfModule mime_magic_module':
+    MimeMagicFile: conf/magic
+  EnableSendfile: on
+  IncludeOptional: conf.d/*.conf
+
+httpd:
+  cfg: "{{ httpd_default_config|combine(httpd_config) }}"
 ...

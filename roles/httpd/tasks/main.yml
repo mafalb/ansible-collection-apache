@@ -81,8 +81,10 @@
     dest: "{{ httpd_main_cfg }}"
     mode: "{{ httpd_cfg_mode }}"
     backup: true
-  notify: reload httpd
+  vars:
+    httpd_cfg_dict: "{{ httpd.cfg }}"
   register: _http_main_template
+  notify: reload httpd
 
 - name: apache is configured
   template:

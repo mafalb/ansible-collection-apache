@@ -371,5 +371,7 @@ EnableSendfile on
 # Load config files in the "/etc/httpd/conf.d" directory, if any.
 IncludeOptional conf.d/*.conf
 
+{% if httpd_different_vhosts_d is defined %}
 # Load virtual host config files
 IncludeOptional {{ httpd_vhosts_d|basename }}/*.conf
+{% endif %}
