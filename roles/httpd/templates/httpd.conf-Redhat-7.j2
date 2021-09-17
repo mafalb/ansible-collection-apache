@@ -47,7 +47,7 @@
 # same ServerRoot for multiple httpd daemons, you will need to change at
 # least PidFile.
 #
-ServerRoot "{{ httpd_basedir }}"
+ServerRoot "{{ httpd_basename }}"
 
 #
 # Listen: Allows you to bind Apache to specific IP addresses and/or
@@ -263,7 +263,7 @@ LogLevel warn
     # client.  The same rules about trailing "/" apply to ScriptAlias
     # directives as to Alias.
     #
-    ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
+    ScriptAlias /cgi-bin/ "{{ httpd_documentroot|dirname }}/cgi-bin/"
 
 </IfModule>
 
