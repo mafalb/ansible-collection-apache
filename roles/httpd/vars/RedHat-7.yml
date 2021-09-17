@@ -26,7 +26,7 @@ httpd_service: httpd
 httpd_basedir: /etc/httpd
 
 httpd_main_cfg: /etc/httpd/conf/httpd.conf
-httpd_main_template: httpd.apache.httpd.conf.j2
+httpd_main_template: mafalb.apache.httpd.conf.j2
 httpd_conf_d: /etc/httpd/conf.d
 httpd_vhosts_d: /etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
 
@@ -86,4 +86,5 @@ httpd_default_config:
 
 httpd:
   cfg: "{{ httpd_default_config|combine(httpd_config) }}"
+
 ...
