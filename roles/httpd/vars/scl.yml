@@ -22,7 +22,7 @@
 httpd_packages:
 - "{{ scl_prefix }}-httpd"
 
-httpd_apachectl: /opt/{{ scl_provider }}/{{ scl_name }}/usr/sbin/apachectl
+httpd_apachectl: /opt/{{ scl_provider }}/{{ scl_name }}/root/usr/sbin/apachectl
 httpd_service: "{{ scl_prefix }}-httpd"
 
 scl_provider: "{{ scl_prefix|mafalb.scl.provider }}"
