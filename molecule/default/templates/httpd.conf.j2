@@ -77,7 +77,7 @@ Listen 80
 # Example:
 # LoadModule foo_module modules/mod_foo.so
 #
-Include {{ httpd_modules_d }}/*.load
+IncludeOptional {{ httpd_modules_d }}/*.load
 Include {{ httpd_modules_d }}/*.conf
 
 #
