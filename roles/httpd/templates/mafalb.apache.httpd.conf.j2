@@ -19,7 +19,7 @@
 
 {# a simple directive
 #}
-{%- macro directive(key, value, i) -%}
+{% macro directive(key, value, i) -%}
 {% if value|type_debug == 'list' -%}
 {% for v in value -%}
 {{ i * " " }}{{ key }} {{ v }}
@@ -47,10 +47,10 @@ translates to
 {{ i * " " }}<{{ key -}}
 {% if (value|dict2items)[0].key.startswith('_') %} {{ (value|dict2items)[0].value -}}
 {% else %}{{ "First key does not start with _"/0 -}}
-{% endif -%}>
-    {%- for directive in (value|dict2items)[1:] -%}
+{% endif %}>
+{% for directive in (value|dict2items)[1:] -%}
 {{ config_line(directive.key, directive.value, i+4) -}}
-    {% endfor -%}
+{% endfor -%}
 {{ i * " " }}</{{ key }}>
 
 {% endmacro -%}
