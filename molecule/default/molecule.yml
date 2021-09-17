@@ -62,7 +62,7 @@ platforms:
   pre_build_image: ${CI_CONTAINER_PREBUILT:-false}
   tty: true
   groups:
-  - ci
+  - ci_group
 
 - name: ci-proxy
   # save time and use ubuntu because it is locally cached on runner
