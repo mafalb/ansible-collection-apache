@@ -114,7 +114,7 @@
     . /opt/{{ scl_provider }}/{{ scl_name }}/enable
     {{ httpd_apachectl }} configtest
   args:
-    executable: /bin/bash 
+    executable: /bin/bash
   register: _configtest
   changed_when: false
 
