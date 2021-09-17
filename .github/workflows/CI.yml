@@ -115,7 +115,7 @@ jobs:
       CI_PRIVILEGED: ${{ matrix.privileged }}
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
- 
+
     defaults:
       run:
         working-directory: ansible_collections/mafalb/apache
