@@ -27,6 +27,7 @@ httpd_service: apache2
 httpd_basedir: /etc/apache2
 httpd_logdir: /var/log/apache2
 httpd_user: www-data
+httpd_pidfile: /var/run/apache2/apache2
 
 httpd_main_cfg: /etc/apache2/apache2.conf
 httpd_main_template: httpd.conf-Debian.j2

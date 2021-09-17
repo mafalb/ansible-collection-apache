@@ -27,6 +27,7 @@ httpd_service: httpd
 httpd_basedir: /etc/httpd
 httpd_logdir: /var/log/httpd
 httpd_user: apache
+httpd_pidfile: run/httpd.pid
 
 httpd_main_cfg: /etc/httpd/conf/httpd.conf
 
@@ -41,10 +42,11 @@ httpd_default_config:
   ServerRoot: "{{ httpd_basedir }}"
   Listen: 80
   Include: "conf.modules.d/*.conf"
-  User: apache
-  Group: apache
+  User: "{{ httpd_user }}"
+  Group: "{{ httpd_user }}"
   ServerAdmin: root@localhost
   DocumentRoot: "{{ httpd_documentroot }}"
+  PidFile: "{{ httpd_pidfile }}"
 
   'Directory /':
     _Directory: /
