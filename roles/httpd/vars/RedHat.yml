@@ -32,7 +32,7 @@ httpd_vhosts_d: /etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
 
 httpd_conf_symlink: false
 httpd_has_vhosts_d: false
-
+httpd_documentroot: /var/www/html
 
 httpd_default_config:
   ServerRoot: "{{ httpd_basedir }}"

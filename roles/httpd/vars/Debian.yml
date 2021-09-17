@@ -33,6 +33,7 @@ httpd_vhosts_d: /etc/apache2/sites-available
 
 httpd_conf_symlink: true
 httpd_has_vhosts_d: true
+httpd_documentroot: /var/www/html
 
 httpd:
   cfg: {}
