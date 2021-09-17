@@ -39,49 +39,74 @@ httpd_default_config:
   User: apache
   Group: apache
   ServerAdmin: root@localhost
-  DocumentRoot: /var/www/html
+  DocumentRoot: "{{ httpd_documentroot }}"
+
   'Directory /':
+    _Directory: /
     AllowOverride: none
     Require: all denied
-  'Directory var/www':
+
+  'Directory document_root_parent':
+    _Directory: "{{ httpd_documentroot|dirname }}"
     Allowoverride: none
     Require: all granted
-  'Directory /var/www/html':
+
+  'Directory documentroot':
+    _Directory: "{{ httpd_documentroot }}"
     Options: Indexes FollowSymlinks
     AllowOverride: none
     Require: all granted
+
   'IfModule dir_module':
+    _IfModule: dir_module
     DirectoryIndex: index.html
+
   'Files .ht*':
+    _Files: .ht*
     Require: all denied
+
   ErrorLog: "logs/error_log"
   LogLevel: warn
+
   'IfModule log_config_module':
+    _IfModule: log_config_module
     Logformat:
     - '"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined'
     - '"%h %l %u %t \"%r\" %>s %b" common'
     'IfModule logio_module':
+      _IfModule: logio_module
       LogFormat: '"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio'
     CustomLog: '"logs/access_log" combined'
+
   'IfModule alias_module':
-    ScriptAlias: '/cgi-bin/ "/var/www/cgi-bin/"'
-  'Directory "/var/www/cgi-bin"':
-    Allowoverride: none
+    _IfModule: alias_module
+    ScriptAlias: '/cgi-bin/ "{{ httpd_documentroot|dirname }}/cgi-bin"'
+
+  'Directory cgi-bin"':
+    _Directory: "{{ httpd_documentroot|dirname }}/cgi-bin"
+    AllowOverride: none
     Options: none
     Require: all granted
+
   'IfModule mime_module':
+    _IfModule: mime_module
     TypesConfig: /etc/mime.types
     AddType:
     - application/x-compress .Z
     - application/x-gzip .gz .tgz
     - text/html .shtml
     AddOutputFilter: INCLUDES .shtml
+
   AddDefaultCharset: UTF-8
+
   'IfModule mime_magic_module':
+    _IfModule: mime_magic_module
     MimeMagicFile: conf/magic
+
   EnableSendfile: 'on'
   IncludeOptional: conf.d/*.conf
 
 httpd:
   cfg: "{{ httpd_default_config|combine(httpd_config) }}"
+
 ...

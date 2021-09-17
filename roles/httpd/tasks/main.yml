@@ -111,7 +111,8 @@
 - name: check config
   command: apachectl configtest
   register: _configtest
- 
+  changed_when: false
+
 - block:
   - name: debug
     debug: var=_httpd_templates
