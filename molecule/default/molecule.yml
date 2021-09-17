@@ -41,7 +41,7 @@ lint: |
 platforms:
 # only centos7 has scl, so check on centos7 by default
 # --> we can share molecule.yml between scenarios
-- name: ci-${CI_HOSTNAME:-centos7}
+- name: ${CI_HOSTNAME:-centos7}
   image: ${CI_IMAGE:-quay.io/centos/centos:7}
   command: /lib/systemd/systemd
   network_mode: bridge
