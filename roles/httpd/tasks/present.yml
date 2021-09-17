@@ -46,7 +46,7 @@
 - name: apache is configured
   template:
     src: "{{ item.src }}"
-    dest: "{{ httpd_conf_d }}/{{ item.dest }}"
+    dest: "{{ httpd_conf_d_wr|default(httpd_conf_d) }}/{{ item.dest }}"
     mode: "{{ httpd_cfg_mode }}"
     backup: true
   loop: "{{ httpd_templates }}"
@@ -56,13 +56,13 @@
 
 - name: symlink if necessary (e.g. on debian)
   file:
-    src: "{{ httpd_conf_d }}/{{ item.dest }}"
-    dest: "{{ httpd_basedir }}/conf-enabled/{{ item.dest }}"
+    src: "{{ httpd_conf_d_wr }}/{{ item.dest }}"
+    dest: "{{ httpd_conf_d }}/{{ item.dest }}"
     state: link
   loop: "{{ httpd_templates }}"
   when:
   - httpd_templates is defined
-  - httpd_conf_symlink|bool
+  - httpd_conf_d_wr is defined
   register: _httpd_symlinks
 
 - name: check config

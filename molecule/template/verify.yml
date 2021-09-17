@@ -38,7 +38,6 @@
       changed_when: false
       loop:
       - /etc/httpd/conf.d/test.conf
-      - /etc/httpd/conf.d/bla.conf
 
     - name: our template was used
       command: grep -q 0443cbbdbee3 /etc/httpd/conf/httpd.conf
@@ -53,14 +52,12 @@
       changed_when: false
       loop:
       - /etc/apache2/conf-available/test.conf
-      - /etc/apache2/conf-available/bla.conf
 
     - name: config files are symlinked
       command: test -h {{ item }}
       changed_when: false
       loop:
       - /etc/apache2/conf-enabled/test.conf
-      - /etc/apache2/conf-enabled/bla.conf
 
     - name: our template was used
       command: grep -q 0443cbbdbee3 /etc/apache2/apache2.conf

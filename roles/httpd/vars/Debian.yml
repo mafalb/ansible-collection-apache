@@ -25,13 +25,20 @@ httpd_packages:
 httpd_configtest: /usr/sbin/apache2ctl configtest
 httpd_service: apache2
 httpd_basedir: /etc/apache2
+httpd_logdir: /var/log/apache2
+httpd_user: www-data
 
 httpd_main_cfg: /etc/apache2/apache2.conf
 httpd_main_template: httpd.conf-Debian.j2
-httpd_conf_d: /etc/apache2/conf-available
-httpd_vhosts_d: /etc/apache2/sites-available
 
-httpd_conf_symlink: true
+httpd_conf_d: /etc/apache2/conf-enabled
+httpd_vhosts_d: /etc/apache2/sites-enabled
+httpd_modules_d: /etc/apache2/mods-enabled
+
+httpd_conf_d_wr: /etc/apache2/conf-available
+httpd_vhosts_d_wr: /etc/apache2/sites-available
+httpd_modules_d_rw: /etc/apache2/mods-available
+
 httpd_has_vhosts_d: true
 httpd_documentroot: /var/www/html
 

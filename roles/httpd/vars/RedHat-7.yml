@@ -25,12 +25,14 @@ httpd_packages:
 httpd_configtest: /usr/sbin/apachectl configtest
 httpd_service: httpd
 httpd_basedir: /etc/httpd
+httpd_basedir: /var/log/httpd
+httpd_user: apache
 
 httpd_main_cfg: /etc/httpd/conf/httpd.conf
 httpd_conf_d: /etc/httpd/conf.d
 httpd_vhosts_d: /etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
+httpd_modules_d: /etc/httpd/conf.modules.d
 
-httpd_conf_symlink: false
 httpd_has_vhosts_d: false
 httpd_documentroot: /var/www/html
 

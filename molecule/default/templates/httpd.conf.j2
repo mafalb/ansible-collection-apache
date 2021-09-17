@@ -52,7 +52,7 @@
 # same ServerRoot for multiple httpd daemons, you will need to change at
 # least PidFile.
 #
-ServerRoot "/etc/httpd"
+ServerRoot "{{ httpd_basedir }}"
 
 #
 # Listen: Allows you to bind Apache to specific IP addresses and/or
@@ -77,7 +77,8 @@ Listen 80
 # Example:
 # LoadModule foo_module modules/mod_foo.so
 #
-Include conf.modules.d/*.conf
+Include {{ httpd_modules_d }}/*.load
+Include {{ httpd_modules_d }}/*.conf
 
 #
 # If you wish httpd to run as a different user or group, you must run
@@ -87,8 +88,8 @@ Include conf.modules.d/*.conf
 # It is usually good practice to create a dedicated user and group for
 # running httpd, as with most system services.
 #
-User apache
-Group apache
+User {{ httpd_user }}
+Group {{ httpd_user }}
 
 # 'Main' server configuration
 #
@@ -203,7 +204,7 @@ DocumentRoot "/var/www/html"
 # logged here.  If you *do* define an error logfile for a <VirtualHost>
 # container, that host's errors will be logged there and not here.
 #
-ErrorLog "logs/error_log"
+ErrorLog "{{ httpd_logdir }}/error_log"
 
 #
 # LogLevel: Control the number of messages logged to the error_log.
@@ -238,7 +239,7 @@ LogLevel warn
     # If you prefer a logfile with access, agent, and referer information
     # (Combined Logfile Format) you can use the following directive.
     #
-    CustomLog "logs/access_log" combined
+    CustomLog "{{ httpd_logdir }}/access_log" combined
 </IfModule>
 
 <IfModule alias_module>
@@ -374,7 +375,7 @@ EnableSendfile on
 # Supplemental configuration
 #
 # Load config files in the "/etc/httpd/conf.d" directory, if any.
-IncludeOptional conf.d/*.conf
+IncludeOptional {{ httpd_conf_d }}/*.conf
 
 {% if httpd_different_vhosts_d is defined %}
 # Load virtual host config files
