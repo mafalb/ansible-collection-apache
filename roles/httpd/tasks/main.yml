@@ -109,7 +109,7 @@
   register: _httpd_symlinks
 
 - name: check config
-  command: apachectl configtest
+  command: "{{ httpd_apachectl }} configtest"
   register: _configtest
   changed_when: false
 
