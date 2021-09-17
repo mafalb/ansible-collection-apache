@@ -25,7 +25,7 @@ httpd_packages:
 httpd_configtest: /usr/sbin/apachectl configtest
 httpd_service: httpd
 httpd_basedir: /etc/httpd
-httpd_basedir: /var/log/httpd
+httpd_logdir: /var/log/httpd
 httpd_user: apache
 
 httpd_main_cfg: /etc/httpd/conf/httpd.conf
