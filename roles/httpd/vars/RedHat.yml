@@ -22,7 +22,7 @@
 httpd_packages:
 - httpd
 
-httpd_apachctl: /usr/sbin/apachectl
+httpd_apachectl: /usr/sbin/apachectl
 httpd_service: httpd
 httpd_basedir: /etc/httpd
 

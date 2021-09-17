@@ -22,6 +22,7 @@
 httpd_packages:
 - "{{ scl_prefix }}-httpd"
 
+httpd_apachectl: /opt/{{ scl_provider }}/{{ scl_name }}/usr/sbin/apachectl
 httpd_service: "{{ scl_prefix }}-httpd"
 
 scl_provider: "{{ scl_prefix|mafalb.scl.provider }}"
@@ -33,6 +34,5 @@ httpd_conf_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf.d
 httpd_vhosts_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
 
 httpd_documentroot: /opt/{{ scl_provider }}/{{ scl_name }}/root/var/www/html
-httpd_apachectl: /opt/{{ scl_provider }}/{{ scl_name }}/usr/sbin/apachectl
 
 ...

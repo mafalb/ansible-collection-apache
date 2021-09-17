@@ -22,7 +22,7 @@
 httpd_packages:
 - apache2
 
-httpd_apachctl: /usr/sbin/apache2ctl
+httpd_apachectl: /usr/sbin/apache2ctl
 httpd_service: apache2
 httpd_basedir: /etc/apache2
 
