@@ -38,9 +38,8 @@ httpd_container_sections:
 httpd_default_config:
   ServerRoot: '"{{ httpd_basedir }}"'
   Listen: 80
-  IncludeOptional:
-  - "{{ httpd_modules_d }}/*.load"
-  - "{{ httpd_modules_d }}/*.conf"
+  IncludeOptional: "{{ httpd_modules_d }}/*.load"
+  'Include modules': "{{ httpd_modules_d }}/*.conf"
   User: "{{ httpd_user }}"
   Group: "{{ httpd_user }}"
   ServerAdmin: root@localhost
@@ -98,7 +97,7 @@ httpd_default_config:
     _Files: .ht*
     Require: all denied
 
-  'IncludeOptional config': "{{ httpd_conf_d }}/*.conf"
+  'Include config': "{{ httpd_conf_d }}/*.conf"
 
 httpd:
   cfg: "{{ httpd_default_config|combine(httpd_config) }}"
