@@ -17,8 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 #}
 
-{# a simple directive
-#}
+{# a simple directive #}
 {% macro directive(key, value, i) -%}
 {% if value|type_debug == 'list' -%}
 {% for v in value -%}
@@ -42,6 +41,7 @@ translates to
 </Directory>
 
 #}
+
 {%- macro container_section(key, value, i) %}
 
 {{ i * " " }}<{{ key -}}
@@ -55,13 +55,12 @@ translates to
 
 {% endmacro -%}
 
-{# a container section or a simple directive
-#} 
+{# a container section or a simple directive #}
 {%- macro config_line(key, value, i) -%}
-{% if key.split()[0] in httpd_container_sections -%}
-{{ container_section(key.split()[0], value, i) -}}
+{% if key.split()[0].lower() in httpd_container_sections -%}
+{{ container_section(key.split()[0].lower(), value, i) -}}
 {% else -%}
-{{ directive(key, value, i) -}}
+{{ directive(key.split()[0], value, i) -}}
 {% endif -%}
 {% endmacro -%}
 

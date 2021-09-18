@@ -39,38 +39,17 @@ httpd_has_vhosts_d: false
 httpd_documentroot: /var/www/html
 
 httpd_default_config:
-  ServerRoot: "{{ httpd_basedir }}"
+  ServerRoot: '"{{ httpd_basedir }}"'
   Listen: 80
+  'IncludeOptional modules': "{{ httpd_modules_d }}/*.load"
   Include: "conf.modules.d/*.conf"
   User: "{{ httpd_user }}"
   Group: "{{ httpd_user }}"
   ServerAdmin: root@localhost
-  DocumentRoot: "{{ httpd_documentroot }}"
+  DocumentRoot: '"{{ httpd_documentroot }}"'
   PidFile: "{{ httpd_pidfile }}"
-
-  'Directory /':
-    _Directory: /
-    AllowOverride: none
-    Require: all denied
-
-  'Directory document_root_parent':
-    _Directory: "{{ httpd_documentroot|dirname }}"
-    Allowoverride: none
-    Require: all granted
-
-  'Directory documentroot':
-    _Directory: "{{ httpd_documentroot }}"
-    Options: Indexes FollowSymlinks
-    AllowOverride: none
-    Require: all granted
-
-  'IfModule dir_module':
-    _IfModule: dir_module
-    DirectoryIndex: index.html
-
-  'Files .ht*':
-    _Files: .ht*
-    Require: all denied
+  EnableSendfile: 'on'
+  AddDefaultCharset: UTF-8
 
   ErrorLog: "logs/error_log"
   LogLevel: warn
@@ -90,9 +69,9 @@ httpd_default_config:
     ScriptAlias: '/cgi-bin/ "{{ httpd_documentroot|dirname }}/cgi-bin"'
 
   'Directory cgi-bin"':
-    _Directory: "{{ httpd_documentroot|dirname }}/cgi-bin"
-    AllowOverride: none
-    Options: none
+    _Directory: "{{ httpd_documentroot|dirname }}/cgi-bin/"
+    AllowOverride: None
+    Options: None
     Require: all granted
 
   'IfModule mime_module':
@@ -104,14 +83,35 @@ httpd_default_config:
     - text/html .shtml
     AddOutputFilter: INCLUDES .shtml
 
-  AddDefaultCharset: UTF-8
-
   'IfModule mime_magic_module':
     _IfModule: mime_magic_module
-    MimeMagicFile: conf/magic
+    MIMEMagicFile: conf/magic
 
-  EnableSendfile: 'on'
-  IncludeOptional: conf.d/*.conf
+  'Directory /':
+    _Directory: /
+    AllowOverride: None
+    Require: all denied
+
+  'Directory document_root_parent':
+    _Directory: "{{ httpd_documentroot|dirname }}"
+    AllowOverride: None
+    Require: all granted
+
+  'Directory documentroot':
+    _Directory: "{{ httpd_documentroot }}"
+    Options: Indexes FollowSymlinks
+    AllowOverride: None
+    Require: all granted
+
+  'IfModule dir_module':
+    _IfModule: dir_module
+    DirectoryIndex: index.html
+
+  'Files .ht*':
+    _Files: .ht*
+    Require: all denied
+
+  'IncludeOptional config': conf.d/*.conf
 
 httpd:
   cfg: "{{ httpd_default_config|combine(httpd_config) }}"

@@ -20,19 +20,19 @@
 ---
 
 httpd_container_sections:
-- Directory
-- DirectoryMatch
-- Files
-- FilesMatch
-- If
-- IfDefine
-- IfModule
-- IfVersion
-- Location
-- LocationMatch
-- MDomainSet
-- Proxy
-- ProxyMatch
+- directory
+- directorymatch
+- files
+- filesmatch
+- if
+- ifDefine
+- ifmodule
+- ifversion
+- location
+- locationmatch
+- mdomainset
+- proxy
+- proxymatch
 - VirtualHost
 
 ...
