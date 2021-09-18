@@ -80,7 +80,6 @@ platforms:
   - /run/lock
   capabilities:
   - SYS_ADMIN
-  - ALL
   pre_build_image: ${CI_CONTAINER_PREBUILT:-false}
   tty: true
   groups:
