@@ -33,8 +33,6 @@
     - src: bla.conf.j2
       dest: bla.conf
 
-  - role: ci.httpd
-
   tasks:
 
   - name: index.html is present
