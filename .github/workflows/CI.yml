@@ -78,28 +78,35 @@ jobs:
         - target: centos8
           image: quay.io/centos/centos:8
 
+        # debian stretch
         - target: debian9
-          image: docker.io/debian:stretch
+          image: docker.io/debian:9
 
+        # debian buster
         - target: debian10
-          image: docker.io/debian:buster
+          image: docker.io/debian:10
           privileged: true
 
+        # debian bullseye
         - target: debian11
-          image: docker.io/debian:bullseye
+          image: docker.io/debian:11
           privileged: true
 
+        # ubuntu xenial
         - target: ubuntu16
-          image: docker.io/ubuntu:xenial
+          image: docker.io/ubuntu:16.04
 
+        # ubuntu bionic
         - target: ubuntu18
-          image: docker.io/ubuntu:bionic
+          image: docker.io/ubuntu:18.04
 
+        # ubuntu focal
         - target: ubuntu20
-          image: docker.io/ubuntu:focal
+          image: docker.io/ubuntu:20.04
 
+        # ubuntu hirsute
         - target: ubuntu2104
-          image: docker.io/ubuntu:hirsute
+          image: docker.io/ubuntu:21.04
 
     env:
       ANSIBLE_VERSION: ${{ matrix.ansible_version }}
@@ -108,7 +115,7 @@ jobs:
       CI_PRIVILEGED: ${{ matrix.privileged }}
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
- 
+
     defaults:
       run:
         working-directory: ansible_collections/mafalb/apache
@@ -140,6 +147,11 @@ jobs:
       run: |
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s scl
+
+    - name: molecule tests with custom template
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s template
 
     - name: list local container images
       run: docker image ls

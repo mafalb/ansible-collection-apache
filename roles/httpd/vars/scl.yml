@@ -3,7 +3,7 @@
 # This file is part of ansible-collection-apache
 # Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
 #
-# ansible-collection-apache is free software: you can redistribute it 
+# ansible-collection-apache is free software: you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
@@ -22,6 +22,7 @@
 httpd_packages:
 - "{{ scl_prefix }}-httpd"
 
+httpd_configtest: 'scl enable {{ scl_prefix }} "apachectl configtest"'
 httpd_service: "{{ scl_prefix }}-httpd"
 
 scl_provider: "{{ scl_prefix|mafalb.scl.provider }}"

@@ -3,7 +3,7 @@
 # This file is part of ansible-collection-apache
 # Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
 #
-# ansible-collection-apache is free software: you can redistribute it 
+# ansible-collection-apache is free software: you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
@@ -22,7 +22,7 @@
 dependency:
   name: galaxy
   options:
-    role-file: idontexist.yml   # avoid warning while running molecule 
+    role-file: idontexist.yml   # avoid warning while running molecule
     requirements-file: molecule/default/requirements.yml
 
 driver:
@@ -39,8 +39,10 @@ lint: |
   flake8 -v
 
 platforms:
-- name: ci-${CI_NAME:-rocky8}
-  image: ${CI_IMAGE:-quay.io/rockylinux/rockylinux:8}
+# only centos7 has scl, so check on centos7 by default
+# --> we can share molecule.yml between scenarios
+- name: ${CI_HOSTNAME:-centos7}
+  image: ${CI_IMAGE:-quay.io/centos/centos:7}
   command: /lib/systemd/systemd
   network_mode: bridge
   docker_networks:
@@ -60,7 +62,7 @@ platforms:
   pre_build_image: ${CI_CONTAINER_PREBUILT:-false}
   tty: true
   groups:
-  - ci
+  - ci_group
 
 - name: ci-proxy
   # save time and use ubuntu because it is locally cached on runner
