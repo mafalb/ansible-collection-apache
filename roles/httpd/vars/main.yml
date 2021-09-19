@@ -100,6 +100,6 @@ httpd_default_config:
   'Include config': "{{ httpd_conf_d }}/*.conf"
 
 httpd:
-  cfg: "{{ httpd_default_config|combine(httpd_config) }}"
+  cfg: "{{ httpd_default_config|combine(yaml) }}"
 
 ...

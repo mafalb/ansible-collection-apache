@@ -32,37 +32,34 @@
       mode: '755'
   when: not httpd_has_vhosts_d
 
-- name: main config is present
+- name: apache config is present
   template:
-    src: "{{ httpd_main_template }}"
-    dest: "{{ httpd_main_cfg }}"
+    src: "{{ httpd_template.src|default('mafalb.apache.httpd.conf.j2') }}"
+    dest: "{{ httpd_main_cfg if httpd_template.dest == '_main_config' else (httpd_conf_d_wr|default(httpd_conf_d) + '/' + httpd_template.dest) }}"
     mode: "{{ httpd_cfg_mode }}"
     backup: true
   vars:
-    httpd_cfg_dict: "{{ httpd.cfg }}"
-  register: _http_main_template
-  notify: reload httpd
-
-- name: apache is configured
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ httpd_conf_d_wr|default(httpd_conf_d) }}/{{ item.dest }}"
-    mode: "{{ httpd_cfg_mode }}"
-    backup: true
-  loop: "{{ httpd_templates }}"
-  when: httpd_templates is defined
+    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else yaml|default({}) }}"
+  loop: "{{ templates }}"
+  loop_control:
+    loop_var: httpd_template
+  when: templates is defined
   notify: reload httpd
   register: _httpd_templates
 
 - name: symlink if necessary (e.g. on debian)
   file:
-    src: "{{ httpd_conf_d_wr }}/{{ item.dest }}"
-    dest: "{{ httpd_conf_d }}/{{ item.dest }}"
+    src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest }}"
+    dest: "{{ httpd_conf_d }}/{{ httpd_template.dest }}"
     state: link
-  loop: "{{ httpd_templates }}"
+  loop: "{{ templates }}"
+  loop_control:
+    loop_var: httpd_template
   when:
-  - httpd_templates is defined
+  - templates is defined
   - httpd_conf_d_wr is defined
+  - httpd_template.dest != '_main_config'
+  notify: reload httpd
   register: _httpd_symlinks
 
 - name: check config
