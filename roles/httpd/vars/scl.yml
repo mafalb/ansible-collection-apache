@@ -25,14 +25,17 @@ httpd_packages:
 httpd_configtest: 'scl enable {{ scl_prefix }} "apachectl configtest"'
 httpd_service: "{{ scl_prefix }}-httpd"
 
-scl_provider: "{{ scl_prefix|mafalb.scl.provider }}"
-scl_name: "{{ scl_prefix|mafalb.scl.name }}"
-
+httpd_documentroot: /opt/{{ scl_provider }}/{{ scl_name }}/root/var/www/html
 httpd_basedir: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd
+httpd_logdir: /var/log/{{ scl_prefix }}
+httpd_pidfile: /opt/{{ scl_provider }}/{{ scl_name }}/root/run/httpd.pid
 httpd_main_cfg: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf/httpd.conf
+
 httpd_conf_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf.d
 httpd_vhosts_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/{{ httpd_different_vhosts_d|default('conf.d') }}
+httpd_modules_d: /opt/{{ scl_provider }}/{{ scl_name }}/root/etc/httpd/conf.modules.d
 
-httpd_documentroot: /opt/{{ scl_provider }}/{{ scl_name }}/root/var/www/html
+scl_provider: "{{ scl_prefix|mafalb.scl.provider }}"
+scl_name: "{{ scl_prefix|mafalb.scl.name }}"
 
 ...

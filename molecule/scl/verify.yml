@@ -34,6 +34,6 @@
     command: test -f {{ item }}
     changed_when: false
     loop:
-    - /opt/rh/httpd24/root/etc/httpd/conf.d/test.conf
+    - /opt/rh/httpd24/root/etc/httpd/conf.d/bla.conf
 
 ...

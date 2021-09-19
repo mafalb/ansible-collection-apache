@@ -37,7 +37,6 @@
       command: test -f {{ item }}
       changed_when: false
       loop:
-      - /etc/httpd/conf.d/test.conf
       - /etc/httpd/conf.d/bla.conf
 
     when: ansible_os_family == 'RedHat'
@@ -49,14 +48,12 @@
       command: test -f {{ item }}
       changed_when: false
       loop:
-      - /etc/apache2/conf-available/test.conf
       - /etc/apache2/conf-available/bla.conf
 
     - name: config files are symlinked
       command: test -h {{ item }}
       changed_when: false
       loop:
-      - /etc/apache2/conf-enabled/test.conf
       - /etc/apache2/conf-enabled/bla.conf
 
     when: ansible_os_family == 'Debian'

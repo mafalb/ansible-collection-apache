@@ -37,9 +37,7 @@
     httpd_templates:
     - src: bla.conf.j2
       dest: bla.conf
-
-  - role: ci.httpd
-    scl: true
+      scl: true
 
   tasks:
 
