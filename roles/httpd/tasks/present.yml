@@ -23,6 +23,13 @@
   package:
     name: "{{ httpd_packages }}"
 
+- name: SCL: symlink to etc is present
+  file:
+    src: "{{ httpd_basedir }}"
+    dest: /etc/opt/{{ scl_provider }}/{{ scl_prefix }}
+    state: link
+  when: scl_prefix is defined
+
 - name: directory for vhosts config is present
   block:
   - name: additional directories are present
