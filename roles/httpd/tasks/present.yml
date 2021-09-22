@@ -29,6 +29,7 @@
     file:
       path: /etc/opt/{{ scl_provider }}
       state: directory
+      mode: "0755"
   - name: SCL only - symlink in /etc/opt is present
     file:
       src: "{{ httpd_basedir }}"
