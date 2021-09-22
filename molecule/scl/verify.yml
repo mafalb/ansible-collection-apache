@@ -35,5 +35,6 @@
     changed_when: false
     loop:
     - /opt/rh/httpd24/root/etc/httpd/conf.d/bla.conf
+    - /etc/opt/rh/httpd24/conf.d/bla.conf
 
 ...
