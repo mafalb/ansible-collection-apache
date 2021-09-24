@@ -11,7 +11,7 @@ Ansible collection mafalb.apache
 
 ## Roles
 
-### [mafalb.apache.httpd](roles/httpd }}/README.md)
+### [mafalb.apache.httpd](roles/httpd/README.md)
 
 ## License
 
