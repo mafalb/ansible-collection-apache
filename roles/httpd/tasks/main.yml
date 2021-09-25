@@ -61,7 +61,7 @@
   assert:
     that: state in ['present', 'absent', 'vars']
 
-- name: include_tasks for {{ sshd_state }}
+- name: include_tasks for {{ state }}
   include_tasks: "{{ state }}.yml"
   when: state in ['present','absent']
 

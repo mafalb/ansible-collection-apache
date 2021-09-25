@@ -23,6 +23,20 @@
   package:
     name: "{{ httpd_packages }}"
 
+- name: SCL only
+  block:
+  - name: SCL only - directory in /etc/opt is present
+    file:
+      path: /etc/opt/{{ scl_provider }}
+      state: directory
+      mode: "0755"
+  - name: SCL only - symlink in /etc/opt is present
+    file:
+      src: "{{ httpd_basedir }}"
+      dest: /etc/opt/{{ scl_provider }}/{{ scl_prefix }}
+      state: link
+  when: scl_prefix is defined
+
 - name: directory for vhosts config is present
   block:
   - name: additional directories are present
@@ -39,7 +53,7 @@
     mode: "{{ httpd_cfg_mode }}"
     backup: true
   vars:
-    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else yaml|default({}) }}"
+    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
   loop: "{{ templates }}"
   loop_control:
     loop_var: httpd_template

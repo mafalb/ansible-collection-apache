@@ -34,6 +34,9 @@
     - dest: _main_config
     - src: bla.conf.j2
       dest: bla.conf
+    - dest: bla1.conf
+      yaml:
+        LogFormat: '"%h gugu" justforCI'
 
   tasks:
 
