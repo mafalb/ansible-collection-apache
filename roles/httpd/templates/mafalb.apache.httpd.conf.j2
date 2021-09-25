@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible collection mafalb.apache.
 # If not, see <https://www.gnu.org/licenses/>.
-#}
+-#}
 
 {# a simple directive #}
 {% macro directive(key, value, i) -%}
@@ -64,7 +64,7 @@ translates to
 {% endif -%}
 {% endmacro -%}
 
-# {{- ansible_managed }}
+# {{ ansible_managed }}
 {% set i=0 %}
 
 {% for line in httpd_cfg_dict|dict2items -%}
