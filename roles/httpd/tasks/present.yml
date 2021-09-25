@@ -53,7 +53,7 @@
     mode: "{{ httpd_cfg_mode }}"
     backup: true
   vars:
-    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else yaml|default({}) }}"
+    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
   loop: "{{ templates }}"
   loop_control:
     loop_var: httpd_template
