@@ -1,0 +1,18 @@
+# Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+---
+
+- name: assert that state is valid
+  assert:
+    that: state in ['present', 'absent']
+
+- name: debug templates
+  debug:
+    var: "{{ httpd_templates }}"
+
+- name: include_tasks for {{ state }}
+  include_tasks: "{{ state }}.yml"
+  when: state in ['present','absent']
+
+...

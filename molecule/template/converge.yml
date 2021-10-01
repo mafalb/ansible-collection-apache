@@ -26,7 +26,8 @@
     https_proxy: http://ci-proxy:3128
   roles:
   - role: mafalb.apache.httpd
-    templates:
+    httpd_different_vhosts_d: conf.vhosts.d
+    httpd_templates:
     - src: httpd.conf.j2
       dest: _main_config
     - src: bla.conf.j2

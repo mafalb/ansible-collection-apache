@@ -1,0 +1,53 @@
+# Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+---
+
+- name: apache config is present
+  template:
+    src: "{{ httpd_template.src|default('mafalb.apache.httpd.conf.j2') }}"
+    dest: "{{ httpd_main_cfg if httpd_template.dest == '_main_config' else (httpd_conf_d_wr|default(httpd_conf_d) + '/' + httpd_template.dest) }}"
+    mode: "{{ httpd_cfg_mode }}"
+    backup: true
+  vars:
+#    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
+    httpd_cfg_dict: "{{ httpd_default_config|combine(httpd_template.yaml|default({})) if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
+  loop: "{{ templates }}"
+  loop_control:
+    loop_var: httpd_template
+  when: templates is defined
+  notify: reload httpd
+  register: _httpd_templates
+
+- name: symlink if necessary (e.g. on debian)
+  file:
+    src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest }}"
+    dest: "{{ httpd_conf_d }}/{{ httpd_template.dest }}"
+    state: link
+  loop: "{{ templates }}"
+  loop_control:
+    loop_var: httpd_template
+  when:
+  - templates is defined
+  - httpd_conf_d_wr is defined
+  - httpd_template.dest != '_main_config'
+  notify: reload httpd
+  register: _httpd_symlinks
+
+- name: check config
+  command: "{{ httpd_configtest }}"
+  register: _configtest
+  changed_when: false
+
+- block:
+  - name: debug
+    debug: var=_httpd_templates
+  - name: debug
+    debug: var=_httpd_symlinks
+  - name: debug
+    debug: var=_configtest
+  tags:
+  - never
+  - debug
+
+...

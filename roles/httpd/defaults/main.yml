@@ -24,5 +24,6 @@ httpd_service_enabled: true
 httpd_cfg_mode: '644'
 yaml: {}
 httpd_main_template: mafalb.apache.httpd.conf.j2
+httpd_templates: []
 
 ...
