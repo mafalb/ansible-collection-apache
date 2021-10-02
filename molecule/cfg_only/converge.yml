@@ -12,6 +12,7 @@
 
   roles:
 
+  - role: mafalb.apache.httpd
   - role: mafalb.apache.cfg
     httpd_templates:
     - dest: /root/my_httpd_config.conf

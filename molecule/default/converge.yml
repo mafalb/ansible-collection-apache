@@ -29,7 +29,6 @@
   roles:
 
   - role: mafalb.apache.httpd
-  - role: mafalb.apache.httpd
     httpd_templates:
     - dest: _main_config
     - src: bla.conf.j2
