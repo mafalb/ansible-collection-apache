@@ -5,11 +5,16 @@
 
 - name: assert that state is valid
   assert:
-    that: state in ['present', 'absent']
+    that:
+    - state in ['present', 'absent']
+    - httpd_templates is defined
 
 - name: debug templates
   debug:
-    var: "{{ httpd_templates }}"
+    var: httpd_templates
+  tags:
+  - debug
+  - all
 
 - name: include_tasks for {{ state }}
   include_tasks: "{{ state }}.yml"

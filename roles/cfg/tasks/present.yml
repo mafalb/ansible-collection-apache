@@ -12,10 +12,10 @@
   vars:
 #    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
     httpd_cfg_dict: "{{ httpd_default_config|combine(httpd_template.yaml|default({})) if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
-  loop: "{{ templates }}"
+  loop: "{{ httpd_templates }}"
   loop_control:
     loop_var: httpd_template
-  when: templates is defined
+  when: httpd_templates is defined
   notify: reload httpd
   register: _httpd_templates
 
@@ -24,11 +24,11 @@
     src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest }}"
     dest: "{{ httpd_conf_d }}/{{ httpd_template.dest }}"
     state: link
-  loop: "{{ templates }}"
+  loop: "{{ httpd_templates }}"
   loop_control:
     loop_var: httpd_template
   when:
-  - templates is defined
+  - httpd_templates is defined
   - httpd_conf_d_wr is defined
   - httpd_template.dest != '_main_config'
   notify: reload httpd
