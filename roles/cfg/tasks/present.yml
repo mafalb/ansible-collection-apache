@@ -3,34 +3,31 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-- name: apache config is present
-  template:
-    src: "{{ httpd_template.src|default('mafalb.apache.httpd.conf.j2') }}"
-    dest: "{{ httpd_main_cfg if httpd_template.dest == '_main_config' else (httpd_conf_d_wr|default(httpd_conf_d) + '/' + httpd_template.dest) }}"
-    mode: "{{ httpd_cfg_mode }}"
-    backup: true
+- name: apache config is present  # noqa risky-file-permissions
+  template: "{{ httpd_template }}"
   vars:
-#    httpd_cfg_dict: "{{ httpd.cfg if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
-    httpd_cfg_dict: "{{ httpd_default_config|combine(httpd_template.yaml|default({})) if httpd_template.dest == '_main_config' else httpd_template.yaml|default({}) }}"
-  loop: "{{ httpd_templates }}"
+    httpd_cfg_dict: >
+      {{ httpd_default_config|combine(httpd_templates[i].yaml|default({}))
+      if httpd_template.dest == httpd_main_cfg
+      else httpd_templates[i].yaml|default({}) }}
+  loop: "{{ _httpd_templates.template_options }}"
   loop_control:
     loop_var: httpd_template
-  when: httpd_templates is defined
+    index_var: i
   notify: reload httpd
-  register: _httpd_templates
+  #register: _httpd_templates
 
 - name: symlink if necessary (e.g. on debian)
   file:
     src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest }}"
     dest: "{{ httpd_conf_d }}/{{ httpd_template.dest }}"
     state: link
-  loop: "{{ httpd_templates }}"
+  loop: "{{ _httpd_templates.template_options }}"
   loop_control:
     loop_var: httpd_template
   when:
-  - httpd_templates is defined
   - httpd_conf_d_wr is defined
-  - httpd_template.dest != '_main_config'
+  - httpd_template.dest != httpd_main_cfg
   notify: reload httpd
   register: _httpd_symlinks
 

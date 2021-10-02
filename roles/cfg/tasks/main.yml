@@ -9,12 +9,9 @@
     - state in ['present', 'absent']
     - httpd_templates is defined
 
-- name: debug templates
-  debug:
-    var: httpd_templates
-  tags:
-  - debug
-  - all
+- name: create modified httpd_templates dict
+  mafalb.apache.make_template_options:
+  register: _httpd_templates
 
 - name: include_tasks for {{ state }}
   include_tasks: "{{ state }}.yml"

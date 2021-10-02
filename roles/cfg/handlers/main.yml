@@ -7,7 +7,7 @@
   service:
     name: "{{ httpd_service }}"
     state: reloaded
-  when: not _httpd_has_started.changed
+  when: not _httpd_has_started.changed|default(false)
   listen:
   - check for changed cert
   - check for changed key
