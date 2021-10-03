@@ -36,14 +36,6 @@ class ActionModule(ActionBase):
                             + '/' + self._templar.template(t['dest'])
             # mangle src
             if 'src' not in t:
-                t['src'] = 'mafalb.apache.httpd.conf.j2'
-            # mangle mode
-            if 'mode' not in t:
-                t['mode'] = self._templar.template(task_vars['httpd_cfg_mode'])
-            # remove yaml
-            if 'yaml' in t:
-                del t['yaml']
-            # add backup option
-            t['backup'] = True
+                t['src'] = self._templar.template(task_vars['httpd_main_template'])
         result['template_options'] = templates
         return result

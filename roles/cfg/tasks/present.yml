@@ -4,7 +4,11 @@
 ---
 
 - name: apache config is present  # noqa risky-file-permissions
-  template: "{{ httpd_template }}"
+  template:
+    src: "{{ httpd_template.src }}"
+    dest: "{{ httpd_template.dest }}"
+    mode: "{{ httpd_cfg_mode }}"
+    backup: true
   vars:
     httpd_cfg_dict: >
       {{ httpd_default_config|combine(httpd_templates[i].yaml|default({}))
