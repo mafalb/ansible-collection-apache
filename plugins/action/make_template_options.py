@@ -32,8 +32,12 @@ class ActionModule(ActionBase):
             if t['dest'] == '_main_config':
                 t['dest'] = self._templar.template(task_vars['httpd_main_cfg'])
             elif not t['dest'].startswith('/'):
-                t['dest'] = self._templar.template(task_vars['httpd_conf_d'])\
-                            + '/' + self._templar.template(t['dest'])
+                if 'httpd_vhosts_d_wr' in task_vars:
+                    t['dest'] = self._templar.template(task_vars['httpd_conf_d_wr'])\
+                        + '/' + self._templar.template(t['dest'])
+                else:
+                    t['dest'] = self._templar.template(task_vars['httpd_conf_d'])\
+                        + '/' + self._templar.template(t['dest'])
             # mangle src
             if 'src' not in t:
                 t['src'] = self._templar.template(task_vars['httpd_main_template'])

@@ -3,9 +3,30 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-- name: apache is absent
-  package:
-    name: "{{ httpd_packages }}"
-    state: absent
+- name: remove cfg files
+  block:
+
+  - name: cfg files are absent
+    copy:
+      dest: "{{ httpd_template.dest }}"
+      content: '# removed file by ansible'
+      mode: "{{ httpd_cfg_mode }}"
+      backup: true
+    loop: "{{ _httpd_templates.template_options }}"
+    loop_control:
+      loop_var: httpd_template
+    when:
+    - httpd_template.dest != httpd_main_cfg
+
+  - name: cfg files are absent
+    file:
+      path: "{{ httpd_template.dest }}"
+      state: absent
+    loop: "{{ _httpd_templates.template_options }}"
+    loop_control:
+      loop_var: httpd_template
+    when:
+    - httpd_template.dest != httpd_main_cfg
+    notify: reload httpd
 
 ...
