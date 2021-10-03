@@ -1,0 +1,26 @@
+# Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+---
+
+- name: apache config is present  # noqa risky-file-permissions
+  template: "{{ httpd_template }}"
+  vars:
+    httpd_cfg_dict: >
+      {{ httpd_default_config|combine(httpd_templates[i].yaml|default({}))
+      if httpd_template.dest == httpd_main_cfg
+      else httpd_templates[i].yaml|default({}) }}
+  notify: reload httpd
+
+- name: symlink if necessary (e.g. on debian)
+  file:
+    src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest }}"
+    dest: "{{ httpd_conf_d }}/{{ httpd_template.dest }}"
+    state: link
+  when:
+  - httpd_conf_d_wr is defined
+  - httpd_template.dest != httpd_main_cfg
+  notify: reload httpd
+  register: _httpd_symlinks
+
+...

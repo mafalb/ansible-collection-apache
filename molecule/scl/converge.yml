@@ -15,9 +15,9 @@
   - role: mafalb.scl.rh
 
   - role: mafalb.apache.httpd
-    scl_prefix: httpd24
+    httpd_scl_prefix: httpd24
   - role: mafalb.apache.httpd
-    scl_prefix: httpd24
+    httpd_scl_prefix: httpd24
     httpd_templates:
     - dest: _main_config
     - src: bla.conf.j2
@@ -30,5 +30,11 @@
       content: "{{ ansible_host }}"
       dest: "/opt/rh/httpd24/root/var/www/html/index.html"
       mode: '644'
+
+  - name: variables are present
+    when: false
+    assert:
+      that:
+      - httpd_scl_provider is defined
 
 ...

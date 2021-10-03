@@ -48,21 +48,21 @@
     include_vars: scl.yml
 
   - name: debug
-    debug: var=scl_provider
+    debug: var=httpd_scl_provider
   - name: debug
-    debug: var=scl_name
+    debug: var=httpd_scl_name
     tags:
     - never
     - debug
 
-  when: scl_prefix is defined
+  when: httpd_scl_prefix is defined
 
 - name: assert that state is valid
   assert:
-    that: state in ['present', 'absent', 'vars']
+    that: state|default('present') in ['present', 'absent', 'vars']
 
-- name: include_tasks for {{ state }}
-  include_tasks: "{{ state }}.yml"
-  when: state in ['present','absent']
+- name: include tasks
+  include_tasks: "{{ state|default('present') }}.yml"
+  when: state|default('present') in ['present','absent']
 
 ...

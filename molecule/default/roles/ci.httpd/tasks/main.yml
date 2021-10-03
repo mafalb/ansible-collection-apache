@@ -23,7 +23,7 @@
   include_role:
     name: mafalb.apache.httpd
   vars:
-    scl_prefix: httpd24
+    httpd_scl_prefix: httpd24
     httpd_templates:
     - src: test.conf.j2
       dest: test.conf

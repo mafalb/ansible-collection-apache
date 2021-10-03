@@ -19,6 +19,7 @@ class ActionModule(ActionBase):
         result['changed'] = False
         result['failed'] = False
         result['template_options'] = []
+
         templates = task_vars['httpd_templates']
         if not isinstance(templates, list):
             raise AnsibleError("httpd_templates is not a list")
@@ -29,15 +30,15 @@ class ActionModule(ActionBase):
                 raise AnsibleError("t is not an AnsibleMapping: {}".format(t))
             # mangle destination
             if t['dest'] == '_main_config':
-                t['dest'] = task_vars['httpd_main_cfg']
+                t['dest'] = self._templar.template(task_vars['httpd_main_cfg'])
             elif not t['dest'].startswith('/'):
-                t['dest'] = task_vars['httpd_conf_d'] + '/' + t['dest']
+                t['dest'] = self._templar.template(task_vars['httpd_conf_d']) + '/' + self._templar.template(t['dest'])
             # mangle src
             if 'src' not in t:
                 t['src'] = 'mafalb.apache.httpd.conf.j2'
             # mangle mode
             if 'mode' not in t:
-                t['mode'] = task_vars['httpd_cfg_mode']
+                t['mode'] = self._templar.template(task_vars['httpd_cfg_mode'])
             # remove yaml
             if 'yaml' in t:
                 del t['yaml']

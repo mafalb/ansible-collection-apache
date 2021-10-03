@@ -3,18 +3,24 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
+- name: assert that SCL specific variables are present
+  assert:
+    that:
+    - httpd_scl_provider is defined
+    - httpd_scl_name is defined
+  when: httpd_scl_prefix is defined
+
 - name: assert that state is valid
   assert:
     that:
-    - state in ['present', 'absent']
+    - state|default('present') in ['present', 'absent']
     - httpd_templates is defined
 
 - name: create modified httpd_templates dict
   mafalb.apache.make_template_options:
   register: _httpd_templates
 
-- name: include_tasks for {{ state }}
-  include_tasks: "{{ state }}.yml"
-  when: state in ['present','absent']
+- name: include_tasks
+  include_tasks: "{{ state|default('present') }}.yml"
 
 ...

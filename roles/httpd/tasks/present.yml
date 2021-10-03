@@ -11,15 +11,15 @@
   block:
   - name: SCL only - directory in /etc/opt is present
     file:
-      path: /etc/opt/{{ scl_provider }}
+      path: /etc/opt/{{ httpd_scl_provider }}
       state: directory
       mode: "0755"
   - name: SCL only - symlink in /etc/opt is present
     file:
       src: "{{ httpd_basedir }}"
-      dest: /etc/opt/{{ scl_provider }}/{{ scl_prefix }}
+      dest: /etc/opt/{{ httpd_scl_provider }}/{{ httpd_scl_prefix }}
       state: link
-  when: scl_prefix is defined
+  when: httpd_scl_prefix is defined
 
 - name: directory for vhosts config is present
   block:
