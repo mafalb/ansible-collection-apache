@@ -23,8 +23,8 @@
 
 - name: symlink if necessary (e.g. on debian)
   file:
-    src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest }}"
-    dest: "{{ httpd_conf_d }}/{{ httpd_template.dest }}"
+    src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest|basename }}"
+    dest: "{{ httpd_template.dest }}"
     state: link
   loop: "{{ _httpd_templates.template_options }}"
   loop_control:
