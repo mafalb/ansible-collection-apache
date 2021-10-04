@@ -6,7 +6,7 @@
 - name: remove cfg files
   block:
 
-  - name: cfg files are absent
+  - name: cfg files are replaced
     copy:
       dest: "{{ httpd_template.dest }}"
       content: '# removed file by ansible'
@@ -17,10 +17,11 @@
       loop_var: httpd_template
     when:
     - httpd_template.dest != httpd_main_cfg
+    - httpd_conf_d_rw is not defined
 
   - name: cfg files are absent
     file:
-      path: "{{ httpd_template.dest }}"
+      path: "{{ httpd_conf_d }}/{{ httpd_template.dest|basename }}"
       state: absent
     loop: "{{ _httpd_templates.template_options }}"
     loop_control:
