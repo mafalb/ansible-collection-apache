@@ -19,7 +19,6 @@
     loop_var: httpd_template
     index_var: i
   notify: reload httpd
-  #register: _httpd_templates
 
 - name: symlink if necessary (e.g. on debian)
   file:
@@ -32,23 +31,15 @@
   when:
   - httpd_conf_d_wr is defined
   - httpd_template.dest != httpd_main_cfg
+  - httpd_template.dest is match(httpd_conf_d_wr|default(''))
   notify: reload httpd
-  register: _httpd_symlinks
 
+# we can not check single apache config files because a config snippet
+# is probably missing some required config directives (like MPM module, e.g)
+# instead we check the final outcome
 - name: check config
   command: "{{ httpd_configtest }}"
   register: _configtest
   changed_when: false
-
-- block:
-  - name: debug
-    debug: var=_httpd_templates
-  - name: debug
-    debug: var=_httpd_symlinks
-  - name: debug
-    debug: var=_configtest
-  tags:
-  - never
-  - debug
 
 ...

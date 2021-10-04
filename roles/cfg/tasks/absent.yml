@@ -17,7 +17,7 @@
       loop_var: httpd_template
     when:
     - httpd_template.dest != httpd_main_cfg
-    - httpd_conf_d_rw is not defined
+    - httpd_conf_d_wr is not defined
 
   - name: cfg files are absent
     file:
