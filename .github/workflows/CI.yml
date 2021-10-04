@@ -158,7 +158,9 @@ jobs:
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s cfg_only
 
-    - name: list local container images
-      run: docker image ls
+    - name: molecule test for absent cfg
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s cfg_absent
 
 ...
