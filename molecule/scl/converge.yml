@@ -1,22 +1,6 @@
-# vim: set ft=yaml ts=2 expandtab:
-
-# This file is part of ansible-collection-apache
 # Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
-#
-# ansible-collection-apache is free software: you can redistribute it
-# and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# ansible-collection-apache is distributed in the hope that it will be
-# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with ansible-collection-apache.
-# If not, see <https://www.gnu.org/licenses/>.
-
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
 - name: converge apache
@@ -31,10 +15,10 @@
   - role: mafalb.scl.rh
 
   - role: mafalb.apache.httpd
-    scl_prefix: httpd24
+    httpd_scl_prefix: httpd24
   - role: mafalb.apache.httpd
-    scl_prefix: httpd24
-    templates:
+    httpd_scl_prefix: httpd24
+    httpd_templates:
     - dest: _main_config
     - src: bla.conf.j2
       dest: bla.conf
@@ -46,5 +30,11 @@
       content: "{{ ansible_host }}"
       dest: "/opt/rh/httpd24/root/var/www/html/index.html"
       mode: '644'
+
+  - name: variables are present
+    when: false
+    assert:
+      that:
+      - httpd_scl_provider is defined
 
 ...

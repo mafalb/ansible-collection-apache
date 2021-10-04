@@ -153,6 +153,11 @@ jobs:
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s template
 
+    - name: molecule test mafalb.apache.cfg
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s cfg_only
+
     - name: list local container images
       run: docker image ls
 

@@ -21,12 +21,19 @@
       command: test -f {{ item }}
       changed_when: false
       loop:
-      - /etc/httpd/conf.d/test.conf
+      - /etc/httpd/conf/httpd.conf
 
-    - name: our template was used
-      command: grep -q 0443cbbdbee3 /etc/httpd/conf/httpd.conf
+    - name: config files are present
+      command: test -f {{ item }}
+      changed_when: false
+      loop:
+      - /etc/httpd/conf.d/bla.conf
+      - /etc/httpd/conf.d/bla1.conf
+      register: _test
+      failed_when: _test.rc == 0
 
     when: ansible_os_family == 'RedHat'
+
 
   - name: checks for Debian
     block:
@@ -35,30 +42,19 @@
       command: test -f {{ item }}
       changed_when: false
       loop:
-      - /etc/apache2/conf-available/test.conf
+      - /etc/apache2/conf-available/bla.conf
+      - /etc/apache2/conf-available/bla1.conf
+      - /etc/apache2/apache2.conf
 
     - name: config files are symlinked
       command: test -h {{ item }}
       changed_when: false
       loop:
-      - /etc/apache2/conf-enabled/test.conf
-
-    - name: our template was used
-      command: grep -q 0443cbbdbee3 /etc/apache2/apache2.conf
-      changed_when: false
+      - /etc/apache2/conf-enabled/bla.conf
+      - /etc/apache2/conf-enabled/bla1.conf
+      register: _test
+      failed_when: _test.rc == 0
 
     when: ansible_os_family == 'Debian'
-
-
-- name: Verify vars
-  hosts: ci_group
-  roles:
-  - role: mafalb.apache.httpd
-    state: vars
-  tasks:
-  - name: assertions
-    assert:
-      that:
-      - httpd_main_cfg is defined
 
 ...

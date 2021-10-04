@@ -1,21 +1,8 @@
 # {{ ansible_managed }}
 {#
-# This file is part of ansible-collection-apache
 # Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
-#
-# ansible-collection-apache is free software: you can redistribute it 
-# and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# ansible-collection-apache is distributed in the hope that it will be
-# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with ansible-collection-apache.
-# If not, see <https://www.gnu.org/licenses/>.
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 #}
 
 # This is the main Apache HTTP server configuration file.  It contains the
@@ -24,6 +11,9 @@
 # In particular, see 
 # <URL:http://httpd.apache.org/docs/2.4/mod/directives.html>
 # for a discussion of each configuration directive.
+#
+# See the httpd.conf(5) man page for more information on this configuration,
+# and httpd.service(8) on using and configuring the httpd service.
 #
 # Do NOT simply read the instructions in here without understanding
 # what they do.  They're here only as hints or reminders.  If you are unsure
@@ -47,7 +37,7 @@
 # same ServerRoot for multiple httpd daemons, you will need to change at
 # least PidFile.
 #
-ServerRoot "{{ httpd_basename }}"
+ServerRoot "/etc/httpd"
 
 #
 # Listen: Allows you to bind Apache to specific IP addresses and/or
@@ -135,19 +125,19 @@ ServerAdmin root@localhost
 # documents. By default, all requests are taken from this directory, but
 # symbolic links and aliases may be used to point to other locations.
 #
-DocumentRoot "{{ httpd_documentroot }}"
+DocumentRoot "/var/www/html"
 
 #
 # Relax access to content within /var/www.
 #
-<Directory "{{ httpd_documentroot|dirname }}">
+<Directory "/var/www">
     AllowOverride None
     # Allow open access:
     Require all granted
 </Directory>
 
 # Further relax access to the default document root:
-<Directory "{{ httpd_documentroot }}">
+<Directory "/var/www/html">
     #
     # Possible values for the Options directive are "None", "All",
     # or any combination of:
@@ -263,7 +253,7 @@ LogLevel warn
     # client.  The same rules about trailing "/" apply to ScriptAlias
     # directives as to Alias.
     #
-    ScriptAlias /cgi-bin/ "{{ httpd_documentroot|dirname }}/cgi-bin/"
+    ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
 
 </IfModule>
 
@@ -271,7 +261,7 @@ LogLevel warn
 # "/var/www/cgi-bin" should be changed to whatever your ScriptAliased
 # CGI directory exists, if you have that configured.
 #
-<Directory "{{ httpd_documentroot|dirname }}/cgi-bin">
+<Directory "/var/www/cgi-bin">
     AllowOverride None
     Options None
     Require all granted

@@ -1,0 +1,45 @@
+# Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+---
+
+- name: apache config is present  # noqa risky-file-permissions
+  template:
+    src: "{{ httpd_template.src }}"
+    dest: "{{ httpd_template.dest }}"
+    mode: "{{ httpd_cfg_mode }}"
+    backup: true
+  vars:
+    httpd_cfg_dict: >
+      {{ httpd_default_config|combine(httpd_templates[i].yaml|default({}))
+      if httpd_template.dest == httpd_main_cfg
+      else httpd_templates[i].yaml|default({}) }}
+  loop: "{{ _httpd_templates.template_options }}"
+  loop_control:
+    loop_var: httpd_template
+    index_var: i
+  notify: reload httpd
+
+- name: symlink if necessary (e.g. on debian)
+  file:
+    src: "{{ httpd_conf_d_wr }}/{{ httpd_template.dest|basename }}"
+    dest: "{{ httpd_conf_d }}/{{ httpd_template.dest|basename }}"
+    state: link
+  loop: "{{ _httpd_templates.template_options }}"
+  loop_control:
+    loop_var: httpd_template
+  when:
+  - httpd_conf_d_wr is defined
+  - httpd_template.dest != httpd_main_cfg
+  - httpd_template.dest is match(httpd_conf_d_wr|default(''))
+  notify: reload httpd
+
+# we can not check single apache config files because a config snippet
+# is probably missing some required config directives (like MPM module, e.g)
+# instead we check the final outcome
+- name: check config
+  command: "{{ httpd_configtest }}"
+  register: _configtest
+  changed_when: false
+
+...

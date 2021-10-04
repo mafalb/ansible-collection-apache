@@ -12,26 +12,11 @@
 
   roles:
 
-  - role: mafalb.apache.httpd
+  - role: mafalb.apache.cfg
+    state: absent
     httpd_templates:
     - dest: _main_config
-    - src: bla.conf.j2
-      dest: bla.conf
+    - dest: bla.conf
     - dest: bla1.conf
-      yaml:
-        LogFormat: '"%h gugu" justforCI'
-
-  tasks:
-
-  - name: index.html is present
-    copy:
-      content: "{{ ansible_host }}"
-      dest: "/var/www/html/index.html"
-      mode: '644'
-
-  - name: variables are present
-    assert:
-      that:
-      - httpd_templates is defined
 
 ...
