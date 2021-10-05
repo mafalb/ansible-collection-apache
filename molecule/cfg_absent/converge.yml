@@ -19,4 +19,12 @@
     - dest: bla.conf
     - dest: bla1.conf
 
+  tasks:
+
+  - name: index.html is present
+    copy:
+      content: "{{ ansible_host }}"
+      dest: "/var/www/html/index.html"
+      mode: '644'
+
 ...
