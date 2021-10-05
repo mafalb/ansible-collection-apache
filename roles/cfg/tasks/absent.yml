@@ -15,8 +15,6 @@
       label: "{{ httpd_template.dest }}"
     register: _httpd_cfg_files
 
-  - debug: var=_httpd_cfg_files
-
   - name: cfg files are replaced
     copy:
       dest: "{{ httpd_template.dest }}"

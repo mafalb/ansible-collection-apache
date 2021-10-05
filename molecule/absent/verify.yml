@@ -10,7 +10,7 @@
 
     - name: get package list
       package_facts:
-       
+
     - name: assert that apache httpd is not installed
       assert:
         that:
