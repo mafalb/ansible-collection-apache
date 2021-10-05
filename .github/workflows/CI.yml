@@ -163,4 +163,9 @@ jobs:
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s cfg_absent
 
+    - name: molecule test for absent
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s absent
+
 ...

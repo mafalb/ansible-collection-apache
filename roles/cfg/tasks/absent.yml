@@ -6,6 +6,17 @@
 - name: remove cfg files
   block:
 
+  - name: check if cfg files are present
+    stat:
+      path: "{{ httpd_template.dest }}"
+    loop: "{{ _httpd_templates.template_options }}"
+    loop_control:
+      loop_var: httpd_template
+      label: "{{ httpd_template.dest }}"
+    register: _httpd_cfg_files
+
+  - debug: var=_httpd_cfg_files
+
   - name: cfg files are replaced
     copy:
       dest: "{{ httpd_template.dest }}"
@@ -15,9 +26,13 @@
     loop: "{{ _httpd_templates.template_options }}"
     loop_control:
       loop_var: httpd_template
+      label: "{{ httpd_template.dest }}"
+      index_var: httpd_i
     when:
     - httpd_template.dest != httpd_main_cfg
     - httpd_conf_d_wr is not defined
+    # only if file exists, i.e. don't create it
+    - _httpd_cfg_files.results[httpd_i].stat.exists
 
   - name: cfg files are absent
     file:
@@ -26,6 +41,7 @@
     loop: "{{ _httpd_templates.template_options }}"
     loop_control:
       loop_var: httpd_template
+      label: "{{ httpd_conf_d }}/{{ httpd_template.dest|basename }}"
     when:
     - httpd_template.dest != httpd_main_cfg
     notify: reload httpd
