@@ -18,6 +18,7 @@
   loop_control:
     loop_var: httpd_template
     index_var: i
+    label: "{{ httpd_template.dest }}"
   notify: reload httpd
 
 - name: symlink if necessary (e.g. on debian)
@@ -28,6 +29,7 @@
   loop: "{{ _httpd_templates.template_options }}"
   loop_control:
     loop_var: httpd_template
+    label: "{{ httpd_template.dest }}"
   when:
   - httpd_conf_d_wr is defined
   - httpd_template.dest != httpd_main_cfg
