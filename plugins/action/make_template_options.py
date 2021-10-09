@@ -22,7 +22,7 @@ class ActionModule(ActionBase):
 
         templates = task_vars['httpd_templates']
         if not isinstance(templates, list):
-            raise AnsibleError("httpd_templates is not a list")
+            raise AnsibleError("templates is not a list")
         if templates == []:
             return result
         for t in templates:

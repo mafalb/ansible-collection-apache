@@ -3,7 +3,7 @@
 ## Basic Usage
 
 ```yaml
-- name: install httpd
+- name: install httpd with vendor config
   hosts: localhost
   roles:
   - role: mafalb.apache.httpd
@@ -14,7 +14,7 @@
   hosts: localhost
   roles:
   - role: mafalb.apache.httpd
-    scl_prefix: httpd24
+    httpd_scl_prefix: httpd24
 ```
 
 ```yaml
@@ -34,16 +34,39 @@
 ```
 
 The above config snippet shows that there are multiple ways to specify the configuration.
-
+If you specify src, then the template will be used.
+If you specify yaml, then the provided default template will be used which translates the provided yaml dict into apache config.
 
 ## Variables
+
+```yaml
+state: present  # apache httpd is installed
+```
+
+```yaml
+state: absent  # apache httpd is not installed
+```
+
+```yaml
+state: cfg  # apache httpd variables are set
+```
 
 ```yaml
 httpd_service_enabled: true
 ```
 
 ```yaml
-scl_prefix: httpd24
+httpd_cfg_mode: '644'  # the mode of the cfg files
+httpd_cfg_owner: 'root'  # the owner of the cfg files
+httpd_cfg_group: 'root'  # the group of the cfg files
+```
+
+```yaml
+httpd_scl_prefix: httpd24
+```
+
+```yaml
+httpd_templates: [ ... ]  # list of config files
 ```
 
 ## License

@@ -8,6 +8,7 @@
     src: "{{ httpd_template.src }}"
     dest: "{{ httpd_template.dest }}"
     mode: "{{ httpd_cfg_mode }}"
+    group: "{{ httpd_user if httpd_cfg_set_group is defined else omit }}"
     backup: true
   vars:
     httpd_cfg_dict: >

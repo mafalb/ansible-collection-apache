@@ -6,10 +6,6 @@
 - name: Set up proxy
   hosts: proxy_group
 
-  module_defaults:
-    apt:
-      update_cache: true
-
   pre_tasks:
 
   # https://github.com/geerlingguy/ansible-role-composer/issues/54
@@ -24,9 +20,6 @@
     delay: 1
     changed_when: false
     failed_when: false
-
-  - name: update apt cache
-    package:
 
   roles:
 
