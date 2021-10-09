@@ -1,0 +1,79 @@
+# Copyright (c) 2021 Markus Falb <markus.falb@mafalb.at>
+# GNU General Public License v3.0+
+# see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+---
+
+argument_specs:
+  main:
+    short_description: Install, configure and start apache
+    description:
+    - The main entry point.
+
+    options:
+
+      state:
+        description:
+        - The state of apache
+        type: str
+        choices:
+        - present
+        - absent
+        - vars
+        default: present
+
+      templates:
+        description:
+        - A list of configuration files.
+        type: list
+        elements: dict
+        mutually_exclusive:
+        - - 'src'
+          - 'yaml'
+        required_one_of:
+        - - 'src'
+          - 'yaml'
+        options:
+          dest:
+            description:
+            - The target file of the configuration.
+            - If it's not given as an absolute path, it's relative to C(httpd_basedir)
+            type: str
+            required: true
+          src:
+            description:
+            - The jinja2 template to use for the configuration.
+            - The default is a template provided by the role.
+            type: str
+            default: 'mafalb.apache.httpd.conf.j2'
+          yaml:
+            description: The configuration as a YAML dict.
+            type: dict
+
+        httpd_service_enabled:
+          description:
+          - Is the service managed?
+          - If false do not try to start or stop it.
+          type: bool
+          default: true
+
+        httpd_cfg_mode:
+          description: The mode of the config files.
+          type: str
+          default: '644'
+
+        httpd_main_template:
+          description: The default jinja2 template.
+          type: str
+          default: 'mafalb.apache.httpd.conf.j2'
+
+        httpd_different_vhosts_d:
+          description:
+          - A directory for config snippets relative to C(httpd_basedir).
+          type: str
+          default: 'conf.d'
+
+        httpd_scl_prefix:
+          description: The SCL prefix if apache httpd is installed as SCL.
+          type: str
+
+...

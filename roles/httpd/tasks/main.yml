@@ -3,20 +3,11 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-- name: OS specific stuff
-  block:
-
-  - name: check that OS is supported
-    assert:
-      that:
-      - ansible_os_family in ['Rocky','RedHat','Debian']
-
-  - name: include OS specific variables
-    include_vars: "{{ item }}"
-    with_first_found:
-    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-    - "{{ ansible_os_family }}.yml"
-
+- name: include OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+  - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+  - "{{ ansible_os_family }}.yml"
 
 - name: SCL specific stuff
   block:
@@ -31,16 +22,9 @@
   - name: include SCL specific variables
     include_vars: scl.yml
 
-  - name: debug
-    debug: var=httpd_scl_provider
-  - name: debug
-    debug: var=httpd_scl_name
-    tags:
-    - never
-    - debug
-
   when: httpd_scl_prefix is defined
 
+# necessary for ansible < 2.11
 - name: assert that state is valid
   assert:
     that: state|default('present') in ['present', 'absent', 'vars']
