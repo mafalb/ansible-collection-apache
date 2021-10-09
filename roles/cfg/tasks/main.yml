@@ -14,7 +14,6 @@
   assert:
     that:
     - state|default('present') in ['present', 'absent']
-    - httpd_templates is defined
 
 - name: create modified httpd_templates dict
   mafalb.apache.make_template_options:
