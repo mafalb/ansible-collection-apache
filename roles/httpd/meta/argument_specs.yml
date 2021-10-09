@@ -76,4 +76,9 @@ argument_specs:
         description: The SCL prefix if apache httpd is installed as SCL.
         type: str
 
+      httpd_cfg_set_group:
+        description:
+        - Set groupship of config files to primary group of apache httpd.
+        type: bool
+
 ...

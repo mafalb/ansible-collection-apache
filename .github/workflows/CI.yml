@@ -168,4 +168,9 @@ jobs:
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s absent
 
+    - name: molecule test for perm
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s perm
+
 ...
