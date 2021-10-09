@@ -33,6 +33,7 @@
 - name: apache config is present
   include_role:
     name: mafalb.apache.cfg
+  when: httpd_templates is defined
 
 - name: apache is started
   service:
