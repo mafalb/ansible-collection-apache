@@ -21,7 +21,7 @@ argument_specs:
         - vars
         default: present
 
-      templates:
+      httpd_templates:
         description:
         - A list of configuration files.
         type: list
