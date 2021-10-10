@@ -7,11 +7,15 @@
   include_tasks:
     file: vars.yml
 
+- name: create modified httpd_templates dict
+  mafalb.apache.make_template_options:
+  register: _httpd_templates
+
 # the content of state was validated in vars.yml
 # we need a default for ansible <2.11
 #
 - name: include tasks
   include_tasks:
-    file: main/{{ state|default('present') }}.yml
+    file: cfg/{{ state|default('present') }}.yml
 
 ...

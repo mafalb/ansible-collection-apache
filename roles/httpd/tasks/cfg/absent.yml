@@ -44,4 +44,6 @@
     - httpd_template.dest != httpd_main_cfg
     notify: reload httpd
 
+  when: httpd_templates is defined
+
 ...

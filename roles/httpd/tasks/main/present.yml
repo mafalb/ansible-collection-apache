@@ -30,9 +30,14 @@
       mode: '755'
   when: not httpd_has_vhosts_d
 
-- name: apache config is present
-  include_role:
-    name: mafalb.apache.cfg
+- name: apache config
+  block:
+  - name: create modified httpd_templates dict
+    mafalb.apache.make_template_options:
+    register: _httpd_templates
+  - name: apache config is present
+    include_tasks:
+      file: cfg/present.yml
   when: httpd_templates is defined
 
 - name: apache is started

@@ -28,7 +28,7 @@
       command: grep gugu /etc/httpd/conf.d/bla1.conf
       changed_when: false
 
-    - name: check if custom template was used 
+    - name: check if custom template was used
       command: grep c0be3a657e87 /etc/httpd/conf.d/bla1.conf /etc/httpd/conf.d/bla.conf /etc/httpd/conf/httpd.conf
       changed_when: false
 
@@ -55,7 +55,7 @@
       command: grep gugu /etc/apache2/conf-enabled/bla1.conf
       changed_when: false
 
-    - name: check if custom template was used 
+    - name: check if custom template was used
       command: grep c0be3a657e87 /etc/apache2/conf-enabled/bla1.conf /etc/apache2/conf-enabled/bla.conf /etc/apache2/apache2.conf
       changed_when: false
 

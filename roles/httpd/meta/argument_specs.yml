@@ -9,15 +9,16 @@ argument_specs:
     description:
     - The main entry point.
 
-    options:
+    options: &arguments_for_main_entrypoint
 
       state:
         description:
         - The state of apache
         type: str
         choices:
-        - present
         - absent
+        - cfg
+        - present
         - vars
         default: present
 
@@ -83,5 +84,16 @@ argument_specs:
         description:
         - Set groupship of config files to primary group of apache httpd.
         type: bool
+  
+      tasks_from:
+        type: str
+
+  cfg:
+    short_description: Add configuration files for apache httpd
+    description:
+    - The cfg entry point.
+    - Add configuration files for apache httpd.
+
+    options: *arguments_for_main_entrypoint
 
 ...
