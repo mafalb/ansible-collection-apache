@@ -40,6 +40,6 @@ class ActionModule(ActionBase):
                         + '/' + self._templar.template(t['dest'])
             # mangle src
             if 'src' not in t:
-                t['src'] = self._templar.template(task_vars['httpd_main_template'])
+                t['src'] = self._templar.template(task_vars['httpd_default_template'])
         result['template_options'] = templates
         return result

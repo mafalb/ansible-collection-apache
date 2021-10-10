@@ -62,8 +62,10 @@ argument_specs:
         type: str
         default: '644'
 
-      httpd_main_template:
-        description: The default jinja2 template.
+      httpd_default_template:
+        description:
+        - The default jinja2 template.
+        - The default default [sic] template is provided by the role.
         type: str
         default: 'mafalb.apache.httpd.conf.j2'
 
