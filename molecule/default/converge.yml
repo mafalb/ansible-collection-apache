@@ -46,6 +46,7 @@
     - name: it has failed
       assert:
         that:
-        - _msg["ansible_failed_task.action"] == 'ansible.builtin.validate_argument_spec'
+        - _msg["ansible_failed_task.action"] in
+          ['ansible.builtin.validate_argument_spec','assert']
 
 ...
