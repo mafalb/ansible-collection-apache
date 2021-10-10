@@ -7,6 +7,7 @@ argument_specs:
   main:
     short_description: Install, configure and start apache
     description:
+    - Install, configure and start apache.
     - The main entry point.
 
     options: &arguments_for_main_entrypoint
@@ -91,13 +92,5 @@ argument_specs:
         choices:
         - 'cfg'
         - 'vars'
-
-  cfg:
-    short_description: Add configuration files for apache httpd
-    description:
-    - The cfg entry point.
-    - Add configuration files for apache httpd.
-
-    options: *arguments_for_main_entrypoint
 
 ...

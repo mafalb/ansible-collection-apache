@@ -29,4 +29,23 @@
       dest: "/var/www/html/index.html"
       mode: '644'
 
+  - name: test that argument_specs.yml is used
+    block:
+    - name: call with gugu
+      include_role:
+        name: mafalb.apache.httpd
+      vars:
+        tasks: gugu
+    rescue:
+    - name: debug
+      debug: var=ansible_failed_task.action
+      register: _msg
+    - name: debug
+      debug: var=_msg
+    always:
+    - name: it has failed
+      assert:
+        that:
+        - _msg["ansible_failed_task.action"] == 'ansible.builtin.validate_argument_spec'
+          
 ...
