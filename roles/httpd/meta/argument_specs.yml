@@ -37,6 +37,7 @@ argument_specs:
             description:
             - The target file of the configuration.
             - If it's not given as an absolute path, it's relative to C(httpd_basedir)
+            - if set to '_main_config' it will be substituted by C(httpd_main_cfg)
             type: str
             required: true
           src:
