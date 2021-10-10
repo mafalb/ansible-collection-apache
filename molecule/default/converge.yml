@@ -47,5 +47,5 @@
       assert:
         that:
         - _msg["ansible_failed_task.action"] == 'ansible.builtin.validate_argument_spec'
-          
+
 ...
