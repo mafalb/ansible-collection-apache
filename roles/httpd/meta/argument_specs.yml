@@ -84,7 +84,7 @@ argument_specs:
         description:
         - Set groupship of config files to primary group of apache httpd.
         type: bool
-  
+
       tasks_from:
         type: str
 
