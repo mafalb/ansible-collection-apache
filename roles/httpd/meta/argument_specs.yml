@@ -85,8 +85,12 @@ argument_specs:
         - Set groupship of config files to primary group of apache httpd.
         type: bool
 
-      tasks_from:
+      tasks:
+        description: Define the entrypoint to the role
         type: str
+        choices:
+        - 'cfg'
+        - 'vars'
 
   cfg:
     short_description: Add configuration files for apache httpd

@@ -38,10 +38,11 @@ If you specify src, then the template will be used.
 If you specify yaml, then the provided default template will be used which translates the provided yaml dict into apache config.
 
 It is possible to do configuration only. This can be useful to create VirtualHost configuration after apache is already configured.
+Apache will not be installed nor started, but the reload handler will be notified. Note that the config is validated, so apachectl must be present.
 
 ```yaml
   - role: mafalb.apache.httpd
-    tasks_from: cfg
+    tasks: cfg
     httpd_templates: [ ... ]
 ```
 

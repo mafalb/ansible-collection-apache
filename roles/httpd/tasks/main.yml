@@ -12,6 +12,7 @@
 #
 - name: include tasks
   include_tasks:
-    file: main/{{ state|default('present') }}.yml
+    file: "{{ tasks|default('main') }}/{{ state|default('present') }}.yml"
+  when: tasks|default('main') not in ['vars']
 
 ...
