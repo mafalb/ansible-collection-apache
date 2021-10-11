@@ -3,8 +3,8 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-httpd_service_enabled: true
-httpd_cfg_mode: '644'
-httpd_default_template: mafalb.apache.httpd.conf.j2
+collections:
+- name: mafalb.squid
+- name: mafalb.scl
 
 ...

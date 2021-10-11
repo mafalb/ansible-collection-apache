@@ -4,13 +4,12 @@
 ---
 
 galaxy_info:
+  role_name: httpd
   author: Markus Falb <markus.falb@mafalb.at>
-  description: Ansible role mafalb.apache.httpd
+  description: a role to support CI
   license: GPL-3.0-or-later
   min_ansible_version: 2.9
 
-  # https://galaxy.ansible.com/api/v1/platforms/
-  #
   platforms:
   - name: EL
     versions:
@@ -30,11 +29,6 @@ galaxy_info:
     - stretch
     - buster
 
-  galaxy_tags:
-  - httpd
-
-dependencies:
-- role: mafalb.apache.httpd
-  state: vars
+dependencies: []
 
 ...

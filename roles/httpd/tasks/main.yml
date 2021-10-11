@@ -3,34 +3,16 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-- name: include OS specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-  - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-  - "{{ ansible_os_family }}.yml"
+- name: include variables
+  include_tasks:
+    file: vars.yml
 
-- name: SCL specific stuff
-  block:
-
-  - name: assert that OS is supported
-    assert:
-      that:
-      - ansible_os_family == 'RedHat'
-      - ansible_os_family != 'Fedora'
-      - ansible_distribution_major_version == '7'
-
-  - name: include SCL specific variables
-    include_vars: scl.yml
-
-  when: httpd_scl_prefix is defined
-
-# necessary for ansible < 2.11
-- name: assert that state is valid
-  assert:
-    that: state|default('present') in ['present', 'absent', 'vars']
-
+# the content of state was validated in vars.yml
+# we need a default for ansible <2.11
+#
 - name: include tasks
-  include_tasks: "{{ state|default('present') }}.yml"
-  when: state|default('present') in ['present','absent']
+  include_tasks:
+    file: "{{ tasks|default('main') }}/{{ state|default('present') }}.yml"
+  when: tasks|default('main') not in ['vars']
 
 ...

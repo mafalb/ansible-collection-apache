@@ -30,9 +30,13 @@
       mode: '755'
   when: not httpd_has_vhosts_d
 
-- name: apache config is present
-  include_role:
-    name: mafalb.apache.cfg
+- name: apache config
+  block:
+  - name: apache config is present
+    include_tasks:
+      file: "{{ role_path }}/tasks/cfg/present.yml"
+    vars:
+      tasks: cfg
   when: httpd_templates is defined
 
 - name: apache is started
