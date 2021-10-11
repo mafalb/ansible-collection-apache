@@ -13,7 +13,7 @@
   roles:
 
   - role: mafalb.apache.httpd
-    tasks: cfg
+    do: cfg
     state: absent
     httpd_templates:
     - dest: _main_config

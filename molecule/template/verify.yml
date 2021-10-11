@@ -54,7 +54,7 @@
   hosts: ci_group
   roles:
   - role: mafalb.apache.httpd
-    tasks: vars
+    do: vars
   tasks:
   - name: assertions
     assert:

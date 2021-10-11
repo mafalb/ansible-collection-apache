@@ -12,6 +12,13 @@ argument_specs:
 
     options: &arguments_for_main_entrypoint
 
+      do:
+        description: Define the wanted action
+        type: str
+        choices:
+        - 'cfg'
+        - 'vars'
+
       state:
         description:
         - The state of apache
@@ -85,12 +92,5 @@ argument_specs:
         description:
         - Set groupship of config files to primary group of apache httpd.
         type: bool
-
-      tasks:
-        description: Define the entrypoint to the role
-        type: str
-        choices:
-        - 'cfg'
-        - 'vars'
 
 ...

@@ -35,7 +35,7 @@
       include_role:
         name: mafalb.apache.httpd
       vars:
-        tasks: gugu
+        do: gugu
     rescue:
     - name: debug
       debug: var=ansible_failed_task.action

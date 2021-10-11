@@ -42,7 +42,7 @@ Apache will not be installed nor started, but the reload handler will be notifie
 
 ```yaml
   - role: mafalb.apache.httpd
-    tasks: cfg
+    do: cfg
     httpd_templates: [ ... ]
 ```
 
