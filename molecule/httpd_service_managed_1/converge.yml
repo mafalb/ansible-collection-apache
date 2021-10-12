@@ -4,7 +4,7 @@
 ---
 
 - name: converge apache
-  hosts: ci_group
+  hosts: all,!infrastructure_group
 
   environment:
     http_proxy: http://ci-proxy:3128
@@ -12,12 +12,17 @@
 
   roles:
 
+  # apache won't be running afterwards
   - role: mafalb.apache.httpd
-  - role: mafalb.apache.httpd
-    do: cfg
-    httpd_templates:
-    - dest: /root/my_httpd_config.conf
-      yaml:
-        LogFormat: '"%h gugu" justforCI'
+    httpd_service_managed: false
+    httpd_service_enabled: true
+
+  tasks:
+
+  - name: index.html is present
+    copy:
+      content: "{{ ansible_host }}"
+      dest: "/var/www/html/index.html"
+      mode: '644'
 
 ...

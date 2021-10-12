@@ -11,7 +11,7 @@
   assert:
     that:
     - state|default('present') in ['absent','present']
-    - tasks|default('main') in ['main','cfg','vars']
+    - do|default('main') in ['main','cfg','vars']
   when:
   - ansible_version.full is version("2.11", '<')
 

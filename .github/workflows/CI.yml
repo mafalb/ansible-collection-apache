@@ -153,7 +153,7 @@ jobs:
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s template
 
-    - name: molecule test cfg
+    - name: molecule test cfg_only
       run: |
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s cfg_only
@@ -177,5 +177,15 @@ jobs:
       run: |
         source ~/.virtualenvs/molecule/bin/activate
         molecule test -s httpd_default_template
+
+    - name: molecule test for httpd_service_managed_1
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s httpd_service_managed_1
+
+    - name: molecule test for httpd_service_managed_2
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s httpd_service_managed_2
 
 ...

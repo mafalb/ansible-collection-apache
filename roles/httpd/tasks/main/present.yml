@@ -36,7 +36,7 @@
     include_tasks:
       file: "{{ role_path }}/tasks/cfg/present.yml"
     vars:
-      tasks: cfg
+      do: cfg
   when: httpd_templates is defined
 
 - name: apache is started
@@ -44,6 +44,7 @@
     name: "{{ httpd_service }}"
     state: started
     enabled: "{{ httpd_service_enabled }}"
+  when: httpd_service_managed
   register: _httpd_has_started
 
 ...

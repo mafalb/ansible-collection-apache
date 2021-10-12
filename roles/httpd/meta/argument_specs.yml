@@ -12,6 +12,13 @@ argument_specs:
 
     options: &arguments_for_main_entrypoint
 
+      do:
+        description: Define the wanted action
+        type: str
+        choices:
+        - 'cfg'
+        - 'vars'
+
       state:
         description:
         - The state of apache
@@ -52,12 +59,30 @@ argument_specs:
             description: The configuration as a YAML dict.
             type: dict
 
-      httpd_service_enabled:
+      httpd_service_managed:
         description:
         - Is the service managed?
-        - If false do not try to start or stop it.
+        - If false do not try to start or stop apache httpd.
         type: bool
         default: true
+
+      httpd_service_enabled:
+        description:
+        - Is the service supposed to be running?
+        - If false stop it, if true start it.
+        - This has no effect if C(httpd_service_managed) is set to true.
+        type: bool
+        default: true
+
+      httpd_service_restart_state:
+        description:
+        - By default httpd is reloaded (apachectl graceful).
+        - Set C(httpd_service_restart_state) to restarted (apachectl restart) if needed.
+        type: str
+        choices:
+        - reloaded
+        - restarted
+        default: reloaded
 
       httpd_cfg_mode:
         description: The mode of the config files.
@@ -85,12 +110,5 @@ argument_specs:
         description:
         - Set groupship of config files to primary group of apache httpd.
         type: bool
-
-      tasks:
-        description: Define the entrypoint to the role
-        type: str
-        choices:
-        - 'cfg'
-        - 'vars'
 
 ...
