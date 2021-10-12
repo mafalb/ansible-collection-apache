@@ -16,6 +16,7 @@
     file:
       path: "/var/www/html2"
       state: directory
+      mode: "0755"
 
   roles:
 
