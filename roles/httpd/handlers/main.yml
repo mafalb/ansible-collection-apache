@@ -6,7 +6,8 @@
 - name: reload httpd
   service:
     name: "{{ httpd_service }}"
-    state: reloaded
+    state: "{{ httpd_service_restart_state }}"
+  # don't reload if it has just started
   when: not _httpd_has_started.changed|default(false)
   listen:
   - check for changed cert
