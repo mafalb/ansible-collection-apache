@@ -18,7 +18,7 @@
     httpd_scl_prefix: httpd24
   - role: mafalb.apache.httpd
     httpd_scl_prefix: httpd24
-    httpd_templates:
+    httpd_cfgs:
     - dest: _main_config
     - src: bla.conf.j2
       dest: bla.conf

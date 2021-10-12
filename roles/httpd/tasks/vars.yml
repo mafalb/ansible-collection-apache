@@ -36,9 +36,9 @@
 
   when: httpd_scl_prefix is defined
 
-- name: create modified httpd_templates dict
+- name: create modified cfgs dict
   mafalb.apache.make_template_options:
   register: _httpd_templates
-  when: httpd_templates is defined
+  when: cfgs is defined or httpd_cfgs is defined
 
 ...

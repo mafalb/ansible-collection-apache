@@ -23,7 +23,7 @@
   # apache won't be running afterwards
   - role: mafalb.apache.httpd
   - role: mafalb.apache.httpd
-    httpd_templates:
+    cfgs:
     - yaml:
         DocumentRoot: /var/www/html2
         Directory:

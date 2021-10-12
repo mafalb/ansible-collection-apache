@@ -10,10 +10,16 @@
     http_proxy: http://ci-proxy:3128
     https_proxy: http://ci-proxy:3128
 
+  vars:
+    # to test if cfgs dict takes precedence over httpd_dests
+    # (httpd_cfgs is an alias for cfgs)
+    httpd_cfgs:
+    - utterly: nonsense
+      
   roles:
 
   - role: mafalb.apache.httpd
-    httpd_templates:
+    cfgs:
     - dest: _main_config
     - src: bla.conf.j2
       dest: bla.conf

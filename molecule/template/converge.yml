@@ -11,7 +11,7 @@
   roles:
   - role: mafalb.apache.httpd
     httpd_different_vhosts_d: conf.vhosts.d
-    httpd_templates:
+    httpd_cfgs:
     - src: httpd.conf.j2
       dest: _main_config
     - src: bla.conf.j2

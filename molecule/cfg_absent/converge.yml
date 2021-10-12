@@ -15,7 +15,7 @@
   - role: mafalb.apache.httpd
     do: cfg
     state: absent
-    httpd_templates:
+    httpd_cfgs:
     - dest: _main_config
     - dest: bla.conf
     - dest: bla1.conf

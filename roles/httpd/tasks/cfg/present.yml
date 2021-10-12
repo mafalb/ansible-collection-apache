@@ -12,9 +12,11 @@
     backup: true
   vars:
     httpd_cfg_dict: >
-      {{ httpd_default_config|combine(httpd_templates[i].yaml|default({}))
+      {{ httpd_default_config|combine(
+           ((cfgs|default(httpd_cfgs))[i].yaml|default({}))
+      )
       if httpd_template.dest == httpd_main_cfg
-      else httpd_templates[i].yaml|default({}) }}
+      else (cfgs|default(httpd_cfgs))[i].yaml|default({}) }}
   loop: "{{ _httpd_templates.template_options }}"
   loop_control:
     loop_var: httpd_template

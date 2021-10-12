@@ -37,7 +37,7 @@
       file: "{{ role_path }}/tasks/cfg/present.yml"
     vars:
       do: cfg
-  when: httpd_templates is defined
+  when: httpd_cfgs is defined or cfgs is defined
 
 - name: apache is started
   service:

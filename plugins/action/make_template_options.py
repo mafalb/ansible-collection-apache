@@ -20,9 +20,11 @@ class ActionModule(ActionBase):
         result['failed'] = False
         result['template_options'] = []
 
-        templates = task_vars['httpd_templates']
-        if not isinstance(templates, list):
-            raise AnsibleError("templates is not a list")
+        templates = []
+        if 'cfgs' in task_vars:
+            templates = task_vars['cfgs']
+        elif 'httpd_cfgs' in task_vars:
+            templates = task_vars['httpd_cfgs']
         if templates == []:
             return result
         for t in templates:

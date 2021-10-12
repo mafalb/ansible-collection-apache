@@ -30,11 +30,13 @@ argument_specs:
         - vars
         default: present
 
-      httpd_templates:
+      httpd_cfgs:
         description:
         - A list of configuration files.
         type: list
         elements: dict
+        aliases:
+        - cfgs
         mutually_exclusive:
         - - 'src'
           - 'yaml'

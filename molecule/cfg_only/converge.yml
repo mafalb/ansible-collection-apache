@@ -15,7 +15,7 @@
   - role: mafalb.apache.httpd
   - role: mafalb.apache.httpd
     do: cfg
-    httpd_templates:
+    cfgs:
     - dest: /root/my_httpd_config.conf
       yaml:
         LogFormat: '"%h gugu" justforCI'
