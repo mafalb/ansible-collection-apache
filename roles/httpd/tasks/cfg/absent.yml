@@ -34,14 +34,14 @@
 
   - name: cfg files are absent
     file:
-      path: "{{ httpd_conf_d }}/{{ httpd_template.dest|basename }}"
+      path: "{{ httpd_conf_d }}/{{ __cfg.dest|basename }}"
       state: absent
-    loop: "{{ _httpd_templates.template_options }}"
+    loop: "{{ _httpd_templates.cfgs }}"
     loop_control:
-      loop_var: httpd_template
-      label: "{{ httpd_conf_d }}/{{ httpd_template.dest|basename }}"
+      loop_var: __cfg
+      label: "{{ httpd_conf_d }}/{{ __cfg.dest|basename }}"
     when:
-    - httpd_template.dest != httpd_main_cfg
+    - __cfg.dest != httpd_main_cfg
     notify: reload httpd
 
   when: httpd_cfgs is defined or cfgs is defined
