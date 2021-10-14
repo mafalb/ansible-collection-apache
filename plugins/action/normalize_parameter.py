@@ -18,13 +18,9 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
         result['changed'] = False
         result['failed'] = False
-        result['template_options'] = []
-
-        templates = []
-        if 'cfgs' in task_vars:
-            templates = task_vars['cfgs']
-        elif 'httpd_cfgs' in task_vars:
-            templates = task_vars['httpd_cfgs']
+        result['cfgs'] = []
+        result['cfgs'] = task_vars[self._task.args['var']]
+        templates = result['cfgs']
         if templates == []:
             return result
         for t in templates:
@@ -43,5 +39,5 @@ class ActionModule(ActionBase):
             # mangle src
             if 'src' not in t:
                 t['src'] = self._templar.template(task_vars['httpd_default_template'])
-        result['template_options'] = templates
+        result['cfgs'] = templates
         return result

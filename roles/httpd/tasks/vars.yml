@@ -37,7 +37,8 @@
   when: httpd_scl_prefix is defined
 
 - name: create modified cfgs dict
-  mafalb.apache.make_template_options:
+  mafalb.apache.normalize_parameter:
+    var: "{{ 'cfgs' if cfgs is defined else 'httpd_cfgs' }}"
   register: _httpd_templates
   when: cfgs is defined or httpd_cfgs is defined
 
