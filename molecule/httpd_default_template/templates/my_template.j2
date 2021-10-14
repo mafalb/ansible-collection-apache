@@ -56,6 +56,6 @@ translates to
 # {{ ansible_managed }}
 {% set i=0 %}
 
-{% for line in httpd_cfg_dict|dict2items -%}
+{% for line in __cfg_dict|dict2items -%}
 {{ config_line(line.key, line.value, i) -}}
 {% endfor -%}

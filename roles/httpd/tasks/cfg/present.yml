@@ -11,7 +11,7 @@
     group: "{{ httpd_user if httpd_cfg_set_group is defined else omit }}"
     backup: true
   vars:
-    httpd_cfg_dict: >
+    __cfg_dict: >
       {{ httpd_default_config|combine(__template.yaml|default({}))
       if __template.dest == httpd_main_cfg
       else __template.yaml|default({}) }}
