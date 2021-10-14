@@ -8,29 +8,29 @@
 
   - name: check if cfg files are present
     stat:
-      path: "{{ httpd_template.dest }}"
-    loop: "{{ _httpd_templates.template_options }}"
+      path: "{{ __cfg.dest }}"
+    loop: "{{ _httpd_templates.cfgs }}"
     loop_control:
-      loop_var: httpd_template
-      label: "{{ httpd_template.dest }}"
-    register: _httpd_cfg_files
+      loop_var: __cfg
+      label: "{{ __cfg.dest }}"
+    register: __cfg_files
 
   - name: cfg files are replaced
     copy:
-      dest: "{{ httpd_template.dest }}"
+      dest: "{{ __cfg.dest }}"
       content: '# removed file by ansible'
       mode: "{{ httpd_cfg_mode }}"
       backup: true
-    loop: "{{ _httpd_templates.template_options }}"
+    loop: "{{ _httpd_templates.cfgs }}"
     loop_control:
-      loop_var: httpd_template
-      label: "{{ httpd_template.dest }}"
-      index_var: httpd_i
+      loop_var: __cfg
+      label: "{{ __.dest }}"
+      index_var: __i
     when:
-    - httpd_template.dest != httpd_main_cfg
+    - __cfg.dest != httpd_main_cfg
     - httpd_conf_d_wr is not defined
     # only if file exists, i.e. don't create it
-    - _httpd_cfg_files.results[httpd_i].stat.exists
+    - __cfg_files.results[__i].stat.exists
 
   - name: cfg files are absent
     file:
