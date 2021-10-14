@@ -15,7 +15,7 @@
       {{ httpd_default_config|combine(__template.yaml|default({}))
       if __template.dest == httpd_main_cfg
       else __template.yaml|default({}) }}
-  loop: "{{ _httpd_templates.cfgs }}"
+  loop: "{{ __normalized_cfgs.data }}"
   loop_control:
     loop_var: __template
     label: "{{ __template.dest }}"
@@ -26,7 +26,7 @@
     src: "{{ httpd_conf_d_wr }}/{{ __template.dest|basename }}"
     dest: "{{ httpd_conf_d }}/{{ __template.dest|basename }}"
     state: link
-  loop: "{{ _httpd_templates.cfgs }}"
+  loop: "{{ __normalized_cfgs.data }}"
   loop_control:
     loop_var: __template
     label: "{{ __template.dest }}"
@@ -41,7 +41,6 @@
 # instead we check the final outcome
 - name: check config
   command: "{{ httpd_configtest }}"
-  register: _configtest
   changed_when: false
 
 ...

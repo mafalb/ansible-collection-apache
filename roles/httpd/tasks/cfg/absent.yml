@@ -9,7 +9,7 @@
   - name: check if cfg files are present
     stat:
       path: "{{ __cfg.dest }}"
-    loop: "{{ _httpd_templates.cfgs }}"
+    loop: "{{ __normalized_cfgs.data }}"
     loop_control:
       loop_var: __cfg
       label: "{{ __cfg.dest }}"
@@ -21,7 +21,7 @@
       content: '# removed file by ansible'
       mode: "{{ httpd_cfg_mode }}"
       backup: true
-    loop: "{{ _httpd_templates.cfgs }}"
+    loop: "{{ __normalized_cfgs.data }}"
     loop_control:
       loop_var: __cfg
       label: "{{ __cfg.dest }}"
@@ -36,7 +36,7 @@
     file:
       path: "{{ httpd_conf_d }}/{{ __cfg.dest|basename }}"
       state: absent
-    loop: "{{ _httpd_templates.cfgs }}"
+    loop: "{{ __normalized_cfgs.data }}"
     loop_control:
       loop_var: __cfg
       label: "{{ httpd_conf_d }}/{{ __cfg.dest|basename }}"
