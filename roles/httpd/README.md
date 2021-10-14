@@ -22,7 +22,7 @@
   hosts: localhost
   roles:
   - role: mafalb.apache.httpd
-    templates:
+    httpd_cfgs:
     - dest: __main_config  # special name for main config
       yaml: { ... }  # config as yaml
     - src: myowntemplate.j2  # config as template
@@ -43,7 +43,7 @@ Apache will not be installed nor started, but the reload handler will be notifie
 ```yaml
   - role: mafalb.apache.httpd
     do: cfg
-    httpd_templates: [ ... ]
+    cfgs: [ ... ]
 ```
 
 ## Variables
