@@ -24,7 +24,7 @@
     loop: "{{ _httpd_templates.cfgs }}"
     loop_control:
       loop_var: __cfg
-      label: "{{ __.dest }}"
+      label: "{{ __cfg.dest }}"
       index_var: __i
     when:
     - __cfg.dest != httpd_main_cfg
