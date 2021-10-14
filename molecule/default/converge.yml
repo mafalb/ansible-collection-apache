@@ -6,10 +6,6 @@
 - name: converge apache
   hosts: all,!infrastructure_group
 
-  environment:
-    http_proxy: http://ci-proxy:3128
-    https_proxy: http://ci-proxy:3128
-
   vars:
     # to test if cfgs dict masks httpd_dests
     # (httpd_cfgs is an alias for cfgs)

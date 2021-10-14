@@ -142,6 +142,11 @@ jobs:
         source ~/.virtualenvs/molecule/bin/activate
         molecule test
 
+    - name: molecule tests with proxy
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test -s proxy
+
     - name: molecule tests with scl
       if: matrix.has_scl == true
       run: |

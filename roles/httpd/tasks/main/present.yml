@@ -6,6 +6,7 @@
 - name: apache is present
   package:
     name: "{{ httpd_packages }}"
+  environment: "{{ proxy|default({}) }}"
 
 - name: SCL only
   block:

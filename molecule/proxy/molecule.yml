@@ -28,6 +28,12 @@ platforms:
 - name: ${CI_HOSTNAME:-centos7}
   image: ${CI_IMAGE:-quay.io/centos/centos:7}
   command: /lib/systemd/systemd
+  network_mode: bridge
+  docker_networks:
+  - name: molecule-internal
+    internal: true
+  networks:
+  - name: molecule-internal
   volumes:
   - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
   tmpfs:
@@ -41,6 +47,28 @@ platforms:
   tty: true
   groups:
   - ci_group
+
+- name: ci-proxy
+  # save time and use ubuntu because it is locally cached on runner
+  image: ubuntu:20.04
+  command: /lib/systemd/systemd
+  network_mode: bridge
+  networks:
+  - name: molecule-external
+  - name: molecule-internal
+  volumes:
+  - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  tmpfs:
+  - /tmp
+  - /run
+  - /run/lock
+  capabilities:
+  - SYS_ADMIN
+  pre_build_image: ${CI_CONTAINER_PREBUILT:-false}
+  tty: true
+  groups:
+  - infrastructure_group
+  - proxy_group
 
 provisioner:
   name: ansible

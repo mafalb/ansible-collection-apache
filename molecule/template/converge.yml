@@ -5,9 +5,6 @@
 
 - name: converge apache
   hosts: all,!infrastructure_group
-  environment:
-    http_proxy: http://ci-proxy:3128
-    https_proxy: http://ci-proxy:3128
   roles:
   - role: mafalb.apache.httpd
     httpd_different_vhosts_d: conf.vhosts.d
