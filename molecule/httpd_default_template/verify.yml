@@ -4,12 +4,11 @@
 ---
 
 - name: verify
-  hosts: all,!infrastructure_group
+  hosts: ci_group
 
   tasks:
 
   - name: httpd is working
-    delegate_to: ci-proxy
     get_url:
       url: http://{{ inventory_hostname }}
       dest: /tmp/{{ inventory_hostname }}.html
