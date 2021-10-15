@@ -3,11 +3,43 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
+- name: create a template that can be used later
+  hosts: localhost
+
+  tasks:
+
+  - name: temp dir is present
+    tempfile:
+      state: directory
+      prefix: my_template
+    register: __tempdir
+
+  - name: fragment 1 is present
+    copy:
+      content: |
+        {# this is a variation of mafalb.apache.httpd.conf.j2 #}
+        # for ci: c0be3a657e87
+        #
+      dest: "{{ __tempdir.path }}/fragment1.j2"
+      mode: '644'
+
+  - name: fragment 2 is present
+    copy:
+      src: "{{ playbook_dir }}/../../roles/httpd/templates/mafalb.apache.httpd.conf.j2"
+      dest: "{{ __tempdir.path }}/"
+      mode: '644'
+
+  - name: my_template.j2 is present
+    assemble:
+      src: "{{ __tempdir.path }}"
+      dest: /tmp/my_template.j2
+      mode: "644"
+
 - name: converge apache
-  hosts: all,!infrastructure_group
+  hosts: ci_group
 
   vars:
-    httpd_default_template: my_template.j2
+    httpd_default_template: /tmp/my_template.j2
 
   roles:
 
