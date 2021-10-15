@@ -39,6 +39,7 @@
   vars:
     proxy:
       http_proxy: http://ci-proxy:3128
+      https_proxy: http://ci-proxy:3128
 
   roles:
 
