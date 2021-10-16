@@ -9,12 +9,17 @@
   tasks:
 
   - name: temp dir is present
-    tempfile:
+    file:
+      path: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}/tmp"
       state: directory
-      prefix: my_template
+      mode: '0755'
+
+  - name: temp dir is present
+    file:
+      path: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}/tmp/my_template.d"
+      state: directory
+      mode: '0755'
     register: __tempdir
-    # this breaks idempotence check
-    changed_when: false
 
   - name: fragment 1 is present
     copy:
