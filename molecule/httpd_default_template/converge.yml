@@ -13,6 +13,8 @@
       state: directory
       prefix: my_template
     register: __tempdir
+    # this breaks idempotence check
+    changed_when: false
 
   - name: fragment 1 is present
     copy:
