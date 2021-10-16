@@ -13,7 +13,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 module: normalize_parameter
-short_description: take a list of apache httpd config files and return a slightly modified version of that list
+short_description: >
+  take a list of apache httpd config files and return a slightly modified version of that list
 version_added: "0.0.1"
 description: take a list of config files and return a slightly modified version of that list
 options:
@@ -25,7 +26,7 @@ options:
     type: str
     required: true
 author:
-  - Markus Falb <markus.falb@mafalb.at>
+- Markus Falb (@mafalb)
 '''
 
 EXAMPLES = r'''
