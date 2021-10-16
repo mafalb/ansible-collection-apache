@@ -14,7 +14,7 @@
       state: directory
       mode: '0755'
 
-  - name: temp dir is present
+  - name: template.d dir is present
     file:
       path: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}/tmp/my_template.d"
       state: directory
