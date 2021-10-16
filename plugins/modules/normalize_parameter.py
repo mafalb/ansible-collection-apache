@@ -18,7 +18,7 @@ short_description: ...
 version_added: "0.0.1"
 description: ...
 options:
-  var:
+  parameter:
     description:
     - The name of the variable that should act as the input of processing
     - This is used by mafalb.apache.httpd, I dont know if it's useful
@@ -38,14 +38,16 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
-original_cfgs:
+failed: false
+changed: true
+original_data:
   - dest: _main_config
   - src: bla.conf.j2
     dest: bla.conf
   - dest: bla1.conf
     yaml:
         LogFormat: '"%h gugu" justforCI'
-cfgs:
+data:
   - src: 'mafalb.apache.httpd.conf.j2'
     dest: /etc/httpd/conf/httpd.conf
   - src: bla.conf.j2

@@ -38,8 +38,8 @@
 
 - name: create modified cfgs dict
   mafalb.apache.normalize_parameter:
-    var: "{{ 'cfgs' if cfgs is defined else 'httpd_cfgs' }}"
-  register: _httpd_templates
+    parameter: "{{ 'cfgs' if cfgs is defined else 'httpd_cfgs' }}"
+  register: __normalized_cfgs
   when: cfgs is defined or httpd_cfgs is defined
 
 ...

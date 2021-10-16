@@ -6,6 +6,10 @@
 - name: Set up proxy
   hosts: proxy_group
 
+  module_defaults:
+    apt:
+      update_cache: true
+
   pre_tasks:
 
   # https://github.com/geerlingguy/ansible-role-composer/issues/54
@@ -21,16 +25,21 @@
     changed_when: false
     failed_when: false
 
+  - name: update apt cache
+    package:
+
   roles:
 
   - name: mafalb.squid.server
 
+
 - name: Set up apache
   hosts: ci_group
 
-  environment:
-    http_proxy: http://ci-proxy:3128
-    https_proxy: http://ci-proxy:3128
+  vars:
+    proxy:
+      http_proxy: http://ci-proxy:3128
+      https_proxy: http://ci-proxy:3128
 
   roles:
 

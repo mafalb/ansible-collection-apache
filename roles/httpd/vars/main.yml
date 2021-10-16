@@ -38,7 +38,7 @@ httpd_default_config:
 
   'IfModule log_config_module':
     _IfModule: log_config_module
-    Logformat:
+    LogFormat:
     - '"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined'
     - '"%h %l %u %t \"%r\" %>s %b" common'
     'IfModule logio_module':
