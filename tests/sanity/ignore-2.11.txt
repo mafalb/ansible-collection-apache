@@ -13,4 +13,4 @@ molecule/proxy/templates/ symlinks
 molecule/scl/roles/ symlinks
 molecule/scl/templates/ symlinks
 molecule/template/templates/ symlinks
-plugins/action/normalize_parameter.py pylint:consider-using-f-string
+#plugins/action/normalize_parameter.py pylint:consider-using-f-string
