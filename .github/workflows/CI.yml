@@ -115,7 +115,7 @@ jobs:
 
     - name: check ansible version
       run: |
-        source ~/virtualenv/bin/activate
+        source ~/.virtualenvs/molecule/bin/activate
         ansible --version
         which ansible-test
         ansible-lint --version
@@ -123,7 +123,7 @@ jobs:
 
     - name: check python version
       run: |
-        source ~/virtualenv/bin/activate
+        source ~/.virtualenvs/molecule/bin/activate
         ansible --version | grep "^\s*python.* ${{ matrix.python-version }}"
 
     - name: install shellcheck
@@ -131,7 +131,8 @@ jobs:
 
     - name: lint
       run: |
-        source ~/virtualenv/bin/activate
+        source ~/.virtualenvs/molecule/bin/activate
+        ansible --version | grep "^\s*python.* ${{ matrix.python-version }}"
         if ansible-lint --version|grep "^ansible-lint 4"
         then
             ANSIBLE_LINT_VERSION=4
