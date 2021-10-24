@@ -95,46 +95,23 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: install shellcheck
-      run: sudo apt install shellcheck
+    # temporarily use dev branch
+    - name: checkout collection mafalb.ansible
+      uses: actions/checkout@v2
+      with:
+        repository: mafalb/ansible-collection-ansible
+        ref: dev
+        path: ansible_collections/mafalb/ansible
 
-    - name: install ansible 2.9/2.10 for python 2.7
-      if: ${{ matrix.python-version == '2.7' && matrix.ansible_version }}
+    - name: move ansible into place
       run: |
-        pip install virtualenv
-        virtualenv ~/virtualenv
-        . ~/virtualenv/bin/activate
-        pip install wheel
-        pip install -U pip setuptools
-        pip install "ansible==${{ matrix.ansible_version }}.*" ansible-lint 'flake8<3.9' pylint 'pycodestyle<2.7'
+        mkdir -p ~/.ansible/collections/ansible_collections/mafalb
+        mv ../ansible ~/.ansible/collections/ansible_collections/mafalb/
 
-    - name: install ansible for python 2.7
-      if: ${{ matrix.python-version == '2.7' && matrix.ansible_core_version }}
+    - name: install molecule
       run: |
-        pip install virtualenv
-        virtualenv ~/virtualenv
-        . ~/virtualenv/bin/activate
-        pip install wheel
-        pip install -U pip setuptools
-        pip install "ansible-core==${{ matrix.ansible_core_version }}.*" ansible ansible-lint 'flake8<3.9' pylint 'pycodestyle<2.7'
-
-    - name: install ansible 2.9/2.10 for python 3
-      if: ${{ matrix.python-version != '2.7' && matrix.ansible_version }}
-      run: |
-        python -m venv ~/virtualenv
-        . ~/virtualenv/bin/activate
-        pip install wheel
-        pip install -U pip setuptools
-        pip install "ansible==${{ matrix.ansible_version }}.*" ansible-lint flake8 pylint 'pycodestyle<2.7'
-
-    - name: install ansible for python 3
-      if: ${{ matrix.python-version != '2.7' && matrix.ansible_core_version }}
-      run: |
-        python -m venv ~/virtualenv
-        . ~/virtualenv/bin/activate
-        pip install wheel
-        pip install -U pip setuptools
-        pip install "ansible-core==${{ matrix.ansible_core_version }}.*" ansible ansible-lint${{ matrix.ansible-lint_version }} flake8 pylint 'pycodestyle<2.7'
+        #ansible-galaxy collection install mafalb.ansible
+        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/molecule-virtualenv.yml -e mafalb_ansible_version=${{ matrix.ansible_version }} -t all,debug
 
     - name: check ansible version
       run: |
@@ -148,6 +125,9 @@ jobs:
       run: |
         source ~/virtualenv/bin/activate
         ansible --version | grep "^\s*python.* ${{ matrix.python-version }}"
+
+    - name: install shellcheck
+      run: sudo apt install shellcheck
 
     - name: lint
       run: |
