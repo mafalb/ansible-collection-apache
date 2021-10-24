@@ -100,7 +100,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: mafalb/ansible-collection-ansible
-        ref: dev
+        ref: f-virtualenv
         path: ansible_collections/mafalb/ansible
 
     - name: move ansible into place
