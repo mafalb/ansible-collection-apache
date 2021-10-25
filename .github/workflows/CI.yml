@@ -110,7 +110,7 @@ jobs:
 
     - name: install a virtualenv
       run: |
-        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e virtualenv_python_version=${{ matrix.python-version }} -e virtualenv_packages=["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}"] -t all,debug
+        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e virtualenv_python_version=${{ matrix.python-version }} -e '{"virtualenv_packages":["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}"]}' -t all,debug
 
     - name: check ansible version
       run: |
