@@ -15,6 +15,6 @@
       timeout: 5
     ignore_errors: true
     register: _res
-    failed_when: _res.failed == true
+    failed_when: (_res.failed)
 
 ...
