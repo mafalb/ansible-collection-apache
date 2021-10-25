@@ -33,11 +33,9 @@ jobs:
 
         - ansible_version: '2.9'
           python-version: 2.7
-          ansible_lint_specifier: '<5'
 
         - ansible_version: '2.9'
           python-version: 3.5
-          ansible_lint_specifier: '<5'
 
         - ansible_version: '2.9'
           python-version: 3.6
@@ -110,7 +108,7 @@ jobs:
 
     - name: install a virtualenv
       run: |
-        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e virtualenv_python_version=${{ matrix.python-version }} -e '{"virtualenv_packages":["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}","_ansible_test"]}' -t all,debug
+        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e virtualenv_python_version=${{ env.ANSIBLE_PYTHON_INTERPRETER }} -e '{"virtualenv_packages":["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}","_ansible_test"]}' -t all,debug
 
     - name: check ansible version
       run: |
