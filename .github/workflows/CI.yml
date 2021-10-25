@@ -108,14 +108,13 @@ jobs:
         mkdir -p ~/.ansible/collections/ansible_collections/mafalb
         mv ../ansible ~/.ansible/collections/ansible_collections/mafalb/
 
-    - name: install molecule
+    - name: install mafalb.ansible
       run: |
-        #ansible-galaxy collection install mafalb.ansible
         ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e virtualenv_python_version=${{ matrix.python-version }} -e virtualenv_packages=["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}"] -t all,debug
 
     - name: check ansible version
       run: |
-        source ~/.virtualenvs/molecule/bin/activate
+        source ~/.virtualenvs/ansible/bin/activate
         ansible --version
         which ansible-test
         ansible-lint --version
@@ -123,7 +122,7 @@ jobs:
 
     - name: check python version
       run: |
-        source ~/.virtualenvs/molecule/bin/activate
+        source ~/.virtualenvs/ansible/bin/activate
         ansible --version
         ansible --version | grep "^\s*python.* ${{ matrix.python-version }}"
 
@@ -132,7 +131,7 @@ jobs:
 
     - name: lint
       run: |
-        source ~/.virtualenvs/molecule/bin/activate
+        source ~/.virtualenvs/ansible/bin/activate
         ansible --version | grep "^\s*python.* ${{ matrix.python-version }}"
         if ansible-lint --version|grep "^ansible-lint 4"
         then
