@@ -103,12 +103,12 @@ jobs:
         ref: f-virtualenv
         path: ansible_collections/mafalb/ansible
 
-    - name: move ansible into place
+    - name: move collection ansible.mafalb into place
       run: |
         mkdir -p ~/.ansible/collections/ansible_collections/mafalb
         mv ../ansible ~/.ansible/collections/ansible_collections/mafalb/
 
-    - name: install mafalb.ansible
+    - name: install a virtualenv
       run: |
         ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e virtualenv_python_version=${{ matrix.python-version }} -e virtualenv_packages=["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}"] -t all,debug
 
