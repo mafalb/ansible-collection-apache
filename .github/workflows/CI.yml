@@ -75,7 +75,7 @@ jobs:
     env:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
-      ANSIBLE_PYTHON_INTERPRETER: ${{ matrix.python-version }}/bin/python
+      ANSIBLE_PYTHON_INTERPRETER: python${{ matrix.python-version }}
 
     defaults:
       run:
@@ -108,7 +108,7 @@ jobs:
 
     - name: install a virtualenv
       run: |
-        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e virtualenv_python_version=${{ env.ANSIBLE_PYTHON_INTERPRETER }} -e '{"virtualenv_packages":["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}","_ansible_test"]}' -t all,debug
+        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e virtualenv_ansible_version=${{ matrix.ansible_version }} -e '{"virtualenv_packages":["_ansible","ansible-lint${{ matrix.ansible_lint_specifier }}","_ansible_test"]}' -t all,debug
 
     - name: check ansible version
       run: |
