@@ -17,7 +17,7 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
 
-  SANITY:
+  ansible-test:
 
     # don't run on pull request from ourselves
     #
@@ -32,45 +32,45 @@ jobs:
         include:
 
         - ansible_version: '2.9'
-          python-version: 2.7
+          python_version: 2.7
 
         - ansible_version: '2.9'
-          python-version: 3.5
+          python_version: 3.5
 
         - ansible_version: '2.9'
-          python-version: 3.6
+          python_version: 3.6
 
         - ansible_version: '2.9'
-          python-version: 3.7
+          python_version: 3.7
 
         - ansible_version: '2.9'
-          python-version: 3.8
+          python_version: 3.8
 
 
         - ansible_version: '2.10'
-          python-version: 3.6
+          python_version: 3.6
 
         - ansible_version: '2.10'
-          python-version: 3.7
+          python_version: 3.7
 
         - ansible_version: '2.10'
-          python-version: 3.8
+          python_version: 3.8
 
         - ansible_version: '2.10'
-          python-version: 3.9
+          python_version: 3.9
 
 
         - ansible_version: '2.11'
-          python-version: 3.6
+          python_version: 3.6
 
         - ansible_version: '2.11'
-          python-version: 3.7
+          python_version: 3.7
 
         - ansible_version: '2.11'
-          python-version: 3.8
+          python_version: 3.8
 
         - ansible_version: '2.11'
-          python-version: 3.9
+          python_version: 3.9
 
 
         - ansible_version: '2.12'
@@ -86,7 +86,7 @@ jobs:
     env:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
-      ANSIBLE_PYTHON_INTERPRETER: python${{ matrix.python-version }}
+      ANSIBLE_PYTHON_INTERPRETER: python${{ matrix.python_version }}
 
     defaults:
       run:
@@ -102,7 +102,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python_version: ${{ matrix.python_version }}
 
     # temporarily use dev branch
     - name: checkout collection mafalb.ansible
@@ -117,23 +117,27 @@ jobs:
         mkdir -p ~/.ansible/collections/ansible_collections/mafalb
         mv ../ansible ~/.ansible/collections/ansible_collections/mafalb/
 
+    # necessary ?
+    - name: install virtualenv for python 2.7
+      if: matrix.python_version == '2.7'
+      run: |
+        pip install virtualenv
+
     - name: install a virtualenv
       run: |
-        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e '{"virtualenv_packages":["_ansible==${{ matrix.ansible_version }}","ansible-lint${{ matrix.ansible_lint_specifier }}","_ansible_test"]}' -t all,debug
+        ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/install-ansible.yml -e '{"virtualenv_packages":["_ansible==${{ matrix.ansible_version }}","ansible-lint${{ matrix.ansible_lint_specifier }}","_ansible_test","flake8"]}' -e mafalb_ansible_virtualenv_python=python${{ matrix.python_version }} -t all,debug
 
     - name: check ansible version
       run: |
         source ~/.virtualenvs/ansible/bin/activate
         ansible --version
-        which ansible-test
-        ansible-lint --version
         ansible --version | grep "^ansible.* ${{ matrix.ansible_version }}"
 
     - name: check python version
       run: |
         source ~/.virtualenvs/ansible/bin/activate
         ansible --version
-        ansible --version | grep "^\s*python.* ${{ matrix.python-version }}"
+        ansible --version | grep "^\s*python.* ${{ matrix.python_version }}"
 
     - name: install shellcheck
       run: sudo apt install shellcheck
@@ -141,16 +145,21 @@ jobs:
     - name: lint
       run: |
         source ~/.virtualenvs/ansible/bin/activate
-        ansible --version | grep "^\s*python.* ${{ matrix.python-version }}"
         if ansible-lint --version|grep "^ansible-lint 4"
         then
             ANSIBLE_LINT_VERSION=4
         fi
-        . tests/lint.sh requirements ${{ matrix.python-version }}
+        . tests/lint.sh requirements ${{ matrix.python_version }}
+
+    - name: sanity
+      run: |
+        source ~/.virtualenvs/ansible/bin/activate
+        ansible-test sanity --requirements --python ${{ matrix.python_version }}
+
 
   CI:
 
-    needs: SANITY
+    needs:
 
     # don't run on pull request from ourselves
     #
@@ -164,7 +173,7 @@ jobs:
 
       matrix:
 
-        target:
+        os:
         - fedora33
         - fedora34
         - c8s
@@ -187,64 +196,27 @@ jobs:
 
         include:
 
-        - target: fedora33
-          image: docker.io/fedora:33
+        - os: fedora33
           privileged: true
 
-        - target: fedora34
-          image: docker.io/fedora:34
+        - os: fedora34
           privileged: true
 
-        - target: c8s
-          image: quay.io/centos/centos:stream8
-
-        - target: alma8
-          image: quay.io/almalinux/almalinux:8
-
-        - target: rocky8
-          image: quay.io/rockylinux/rockylinux:8
-
-        - target: centos7
-          image: quay.io/centos/centos:7
+        - os: centos7
           has_scl: true
 
-        - target: centos8
-          image: quay.io/centos/centos:8
-
-        # debian stretch
-        - target: debian9
-          image: docker.io/debian:9
-
         # debian buster
-        - target: debian10
-          image: docker.io/debian:10
+        - os: debian10
           privileged: true
 
         # debian bullseye
-        - target: debian11
-          image: docker.io/debian:11
+        - os: debian11
           privileged: true
-
-        # ubuntu xenial
-        - target: ubuntu16
-          image: docker.io/ubuntu:16.04
-
-        # ubuntu bionic
-        - target: ubuntu18
-          image: docker.io/ubuntu:18.04
-
-        # ubuntu focal
-        - target: ubuntu20
-          image: docker.io/ubuntu:20.04
-
-        # ubuntu hirsute
-        - target: ubuntu2104
-          image: docker.io/ubuntu:21.04
 
     env:
       ANSIBLE_VERSION: ${{ matrix.ansible_version }}
       CI_IMAGE: ${{ matrix.image }}
-      CI_HOSTNAME: ci-${{ matrix.target }}
+      CI_HOSTNAME: ci-${{ matrix.os }}
       CI_PRIVILEGED: ${{ matrix.privileged }}
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
@@ -273,57 +245,57 @@ jobs:
     - name: molecule tests
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test
+        molecule -e .env-${{ matrix.os }}.yml test
 
     - name: molecule tests with proxy
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s proxy
+        molecule -e .env-${{ matrix.os }}.yml test -s proxy
 
     - name: molecule tests with scl
       if: matrix.has_scl == true
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s scl
+        molecule -e .env-${{ matrix.os }}.yml test -s scl
 
     - name: molecule tests with custom template
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s template
+        molecule -e .env-${{ matrix.os }}.yml test -s template
 
     - name: molecule test cfg_only
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s cfg_only
+        molecule -e .env-${{ matrix.os }}.yml test -s cfg_only
 
     - name: molecule test for cfg_absent cfg
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s cfg_absent
+        molecule -e .env-${{ matrix.os }}.yml test -s cfg_absent
 
     - name: molecule test for absent
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s absent
+        molecule -e .env-${{ matrix.os }}.yml test -s absent
 
     - name: molecule test for perm
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s perm
+        molecule -e .env-${{ matrix.os }}.yml test -s perm
 
     - name: molecule test for httpd_default_template
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s httpd_default_template
+        molecule -e .env-${{ matrix.os }}.yml test -s httpd_default_template
 
     - name: molecule test for httpd_service_managed_1
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s httpd_service_managed_1
+        molecule -e .env-${{ matrix.os }}.yml test -s httpd_service_managed_1
 
     - name: molecule test for httpd_service_managed_2
       run: |
         source ~/.virtualenvs/molecule/bin/activate
-        molecule test -s httpd_service_managed_2
+        molecule -e .env-${{ matrix.os }}.yml test -s httpd_service_managed_2
 
 ...
