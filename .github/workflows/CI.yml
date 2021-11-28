@@ -159,7 +159,7 @@ jobs:
 
   CI:
 
-    needs:
+    needs: ansible-test
 
     # don't run on pull request from ourselves
     #
