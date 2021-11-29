@@ -176,7 +176,9 @@ jobs:
         os:
         - fedora33
         - fedora34
+        - fedora35
         - c8s
+        - c9s
         - centos7
         - centos8
         - rocky8
