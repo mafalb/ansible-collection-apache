@@ -184,15 +184,16 @@ jobs:
         - debian9
         - debian10
         - debian11
-        - ubuntu16
         - ubuntu18
         - ubuntu20
         - ubuntu2104
+        - ubuntu2110
 
         ansible_version:
         - '2.9'
         - '2.10'
         - '2.11'
+        - '2.12'
 
         include:
 
