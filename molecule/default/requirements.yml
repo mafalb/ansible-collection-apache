@@ -4,6 +4,7 @@
 ---
 
 collections:
+- name: community.docker
 - name: mafalb.squid
 - name: mafalb.scl
 
