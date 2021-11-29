@@ -235,9 +235,22 @@ jobs:
       with:
         path: ansible_collections/mafalb/apache
 
+    # temporarily use dev branch
+    - name: checkout collection mafalb.ansible
+      uses: actions/checkout@v2
+      with:
+        repository: mafalb/ansible-collection-ansible
+        ref: dev
+        path: ansible_collections/mafalb/ansible
+
+    - name: move collection ansible.mafalb into place
+      run: |
+        mkdir -p ~/.ansible/collections/ansible_collections/mafalb
+        mv ../ansible ~/.ansible/collections/ansible_collections/mafalb/
+
     - name: install molecule
       run: |
-        ansible-galaxy collection install mafalb.ansible
+        #ansible-galaxy collection install mafalb.ansible
         ansible-playbook -D ~/.ansible/collections/ansible_collections/mafalb/ansible/playbooks/molecule.yml -e molecule_ansible_version=${{ matrix.ansible_version }} -t all,debug
 
     - name: check ansible version
