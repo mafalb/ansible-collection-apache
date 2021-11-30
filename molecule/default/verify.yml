@@ -52,4 +52,9 @@
 
     when: ansible_os_family == 'Debian'
 
+  - name: ansible-doc is working
+    delegate_to: localhost
+    command: ansible-doc mafalb.apache.normalize_parameter
+    changed_when: false
+
 ...

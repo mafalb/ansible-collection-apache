@@ -12,42 +12,49 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 DOCUMENTATION = r'''
----
 module: normalize_parameter
-short_description: ...
+short_description: >
+  take a list of apache httpd config files and return a slightly modified version of that list
 version_added: "0.0.1"
-description: ...
+description: take a list of config files and return a slightly modified version of that list
 options:
   parameter:
     description:
-    - The name of the variable that should act as the input of processing
-    - This is used by mafalb.apache.httpd, I dont know if it's useful
-    - outside of that.
+      - The name of the variable that should act as the input of processing
+      - This is used by mafalb.apache.httpd, I dont know if it's useful
+      - outside of that.
     type: str
     required: true
 author:
-- Markus Falb <markus.falb@mafalb.at>
+- Markus Falb (@mafalb)
 '''
 
 EXAMPLES = r'''
 - name: create modified cfgs list
   mafalb.apache.normalize_parameter:
-    name: "{{ 'cfgs' if cfgs is defined else 'httpd_cfgs' }}"
+    parameter: "{{ 'cfgs' if cfgs is defined else 'httpd_cfgs' }}"
   when: cfgs is defined or httpd_cfgs is defined
   register: _cfgs
 '''
 
 RETURN = r'''
-failed: false
-changed: true
 original_data:
+  description:
+    - return the unmodified list in C(original_data)
+  returned: always
+  type: dict
+  sample:
   - dest: _main_config
   - src: bla.conf.j2
     dest: bla.conf
   - dest: bla1.conf
     yaml:
-        LogFormat: '"%h gugu" justforCI'
+      LogFormat: '"%h gugu" justforCI'
 data:
+  description: return the modified list in C(data)
+  returned: always
+  type: dict
+  sample:
   - src: 'mafalb.apache.httpd.conf.j2'
     dest: /etc/httpd/conf/httpd.conf
   - src: bla.conf.j2
@@ -55,5 +62,5 @@ data:
   - src: 'mafalb.apache.httpd.conf.j2'
     dest: bla1.conf
     yaml:
-        LogFormat: '"%h gugu" justforCI'
+      LogFormat: '"%h gugu" justforCI'
 '''

@@ -42,4 +42,10 @@
   register: __normalized_cfgs
   when: cfgs is defined or httpd_cfgs is defined
 
+- name: debug __normalized_cfgs
+  debug:
+    var: __normalized_cfgs
+  tags:
+  - never
+  - debug
 ...

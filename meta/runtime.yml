@@ -3,6 +3,6 @@
 # see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
 ---
 
-requires_ansible: ">=2.9.10,<2.12"
+requires_ansible: ">=2.9.10,<2.13"
 
 ...

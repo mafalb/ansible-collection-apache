@@ -10,17 +10,7 @@ dependency:
     requirements-file: molecule/default/requirements.yml
 
 driver:
-
   name: docker
-
-
-lint: |
-  set -e
-  ! grep -r "no_log: false" .
-  yamllint .
-  ansible-lint -v
-  ansible-lint roles/*/vars/*.yml
-  flake8 -v
 
 platforms:
 # only centos7 has scl, so check on centos7 by default
