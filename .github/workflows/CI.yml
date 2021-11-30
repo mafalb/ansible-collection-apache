@@ -205,6 +205,12 @@ jobs:
         - os: fedora34
           privileged: true
 
+        - os: fedora35
+          privileged: true
+
+        - os: c9s
+          privileged: true
+
         - os: centos7
           has_scl: true
 
